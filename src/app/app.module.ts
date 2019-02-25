@@ -14,13 +14,18 @@ import { LoginPage } from '../pages/login/login';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { config } from './firestoreconfig';
+
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginServiceProvider } from '../providers/login-service/login-service';
 import { RegisterServiceProvider } from '../providers/register-service/register-service';
 import { RegisterPage } from '../pages/register/register';
 
+import { FileChooser } from '@ionic-native/file-chooser';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
 
 @NgModule({
   declarations: [
@@ -37,7 +42,8 @@ import { RegisterPage } from '../pages/register/register';
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
-    HttpClientModule
+    AngularFireStorageModule,
+    HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -55,7 +61,10 @@ import { RegisterPage } from '../pages/register/register';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserServiceProvider,
     LoginServiceProvider,
-    RegisterServiceProvider
+    RegisterServiceProvider,
+    FileChooser,
+    File,
+    FilePath
   ]
 })
 export class AppModule {}
