@@ -11,6 +11,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
+import { ChatPage } from '../pages/chat/chat';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -35,7 +36,8 @@ import { FilePath } from '@ionic-native/file-path';
     HomePage,
     TabsPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    ChatPage
   ],
   imports: [
     BrowserModule,
@@ -53,7 +55,8 @@ import { FilePath } from '@ionic-native/file-path';
     HomePage,
     TabsPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    ChatPage
   ],
   providers: [
     StatusBar,

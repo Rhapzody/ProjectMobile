@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
+import { ChatPage } from '../chat/chat';
 
 /**
  * Generated class for the LoginPage page.
@@ -49,4 +50,7 @@ export class LoginPage {
     this.navCtrl.push(RegisterPage);
   }
 
+  openChat(){
+    this.navCtrl.push(ChatPage);
+  }
 }
