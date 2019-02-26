@@ -87,7 +87,7 @@ export class RegisterPage {
 
     alert(file)
     alert(path)
-   
+
     // this.file.readAsBinaryString(path, file)
     //   .then(content => {
     //     console.log("File-Content: " + JSON.stringify(content));
@@ -122,7 +122,7 @@ export class RegisterPage {
   }
 
   getPhoto(e) {
-    alert(e.target.files[0])
+    //alert(e.target.files[0])
     let options = {
       maximumImagesCount: 1
     };

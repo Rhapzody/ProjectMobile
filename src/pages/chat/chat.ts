@@ -11,25 +11,26 @@ export class ChatPage {
   msg: string = "hello";
   arr = [1,2,3];
   isTrue = true;
+  chatName: string;
 
   constructor(public navCtrl:NavController, public navParams:NavParams) {
 
   }
 
   ionViewDidLoad() {
-    
+
   }
 
   ionViewWillEnter(){
-    
+    this.chatName = this.navParams.get("chatName");
   }
 
   scrollToBottom() {
-   
+
   }
 
 
   doSend() {
-    
+
   }
 }
