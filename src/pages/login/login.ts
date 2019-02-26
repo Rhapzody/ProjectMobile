@@ -51,6 +51,8 @@ export class LoginPage {
   }
 
   openChat(){
-    this.navCtrl.push(ChatPage);
+    this.navCtrl.push(ChatPage, {
+      chatName: "Mr. X"
+    });
   }
 }
