@@ -28,6 +28,8 @@ import { FileChooser } from '@ionic-native/file-chooser';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { ImagePicker } from '@ionic-native/image-picker';
+import {  Base64 } from '@ionic-native/base64';
+import { Camera } from '@ionic-native/camera'
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { ImagePicker } from '@ionic-native/image-picker';
     FileChooser,
     File,
     FilePath,
-    ImagePicker
+    ImagePicker,
+    Base64,
+    Camera
   ]
 })
 export class AppModule { }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { User } from '../../models/users';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 /*
   Generated class for the RegisterServiceProvider provider.
@@ -13,40 +14,40 @@ import { User } from '../../models/users';
 @Injectable()
 export class RegisterServiceProvider {
 
-  constructor(public http: HttpClient, private db: AngularFirestore) {
+  constructor(public http: HttpClient, private db: AngularFirestore, private fstorage: AngularFireStorage) {
     console.log('Hello RegisterServiceProvider Provider');
   }
 
-  async upload(buffer, name) {
-
-    alert('555')
-    let blob = new Blob([buffer], { type: "image/jpeg"})
-
-    let storage = firebase.storage();
-
-    storage.ref('profile/' + name).put(blob).then(d => {
-      alert(d)
-    }).catch(err => {
-      alert(JSON.stringify(err))
-    })
-  }
-
-  createUser(user: User){
+  createUser(user: User) {
     console.log(user);
-    
-    this.db.collection('users').doc(user.email).set({
+
+    return this.db.collection('users').doc(user.email).set({
       email: user.email,
       name: user.name,
       password: user.password,
       photo: user.photo,
       registime: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(data => {
-      console.log(data);
-      alert(JSON.stringify(data))
-    }).catch(err=>{
-      console.log(err);
-      alert(JSON.stringify(err))
     })
+    // .then(data => {
+    //   console.log(data);
+    //   alert(JSON.stringify(data))
+    // }).catch(err => {
+    //   console.log(err);
+    //   alert(JSON.stringify(err))
+    // })
+  }
+
+  uploadImg(user: User) {
+    return this.fstorage.ref('profile/' + user.email + '/' + user.name).putString(user.photo, firebase.storage.StringFormat.DATA_URL)
+    // .then(d => {
+    //   alert(JSON.stringify(d))
+    // }).catch(err => {
+    //   alert(JSON.stringify(err))
+    // })
+  }
+
+  checkEmailDuplicate(email){
+    return this.db.collection('users').doc(email).valueChanges()
   }
 
 }
