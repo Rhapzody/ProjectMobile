@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { File } from '@ionic-native/file';
 import { RegisterServiceProvider } from '../../providers/register-service/register-service';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { FilePath } from '@ionic-native/file-path';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { User } from '../../models/users';
 
 /**
  * Generated class for the RegisterPage page.
@@ -20,8 +22,16 @@ import { FilePath } from '@ionic-native/file-path';
 })
 export class RegisterPage {
 
+  user: User = new User();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private fileChooser: FileChooser, private file: File, private fstorage: AngularFireStorage, private filePath: FilePath) {
+  @ViewChild('email') _email;
+  @ViewChild('name') _name;
+  @ViewChild('password') _password;
+
+  logoProfile:string = "https://png.pngtree.com/svg/20170827/people_106508.png";
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private fileChooser: FileChooser, private file: File, private fstorage: AngularFireStorage, private filePath: FilePath, private imagePicker: ImagePicker, private registerService: RegisterServiceProvider) {
   }
 
   ionViewDidLoad() {
@@ -50,11 +60,11 @@ export class RegisterPage {
       // })
 
       this.filePath.resolveNativePath(uri).then(resolvedFilePath => {
-
+        alert(resolvedFilePath);
         let path = resolvedFilePath.substring(0, resolvedFilePath.lastIndexOf('/'));
         let file = resolvedFilePath.substring(resolvedFilePath.lastIndexOf('/') + 1, resolvedFilePath.length);
         this.readCsvData(path, file)
-
+        this.logoProfile = resolvedFilePath
       }).catch(err => {
         alert(JSON.stringify(err));
       });
@@ -77,7 +87,7 @@ export class RegisterPage {
 
     alert(file)
     alert(path)
-
+   
     // this.file.readAsBinaryString(path, file)
     //   .then(content => {
     //     console.log("File-Content: " + JSON.stringify(content));
@@ -94,14 +104,53 @@ export class RegisterPage {
     //   });
 
     this.file.readAsArrayBuffer(path, file).then(content => {
+      const read = new FileReader()
+      read.onload = e => {
+        this.logoProfile = read.result as string;
+      }
+      read.readAsDataURL(file)
+      alert(read.result)
       alert(JSON.stringify(content))
 
-      this.fstorage.ref('profile/' + file).put(content).then(d => {
-        alert(d)
-      }).catch(err => {
-        alert(JSON.stringify(err))
-      })
+      // this.fstorage.ref('profile/' + file).put(content).then(d => {
+      //   alert(d)
+      // }).catch(err => {
+      //   alert(JSON.stringify(err))
+      // })
 
     })
+  }
+
+  getPhoto(e) {
+    alert(e.target.files[0])
+    let options = {
+      maximumImagesCount: 1
+    };
+    this.imagePicker.getPictures(options).then((results) => {
+      alert(results)
+      for (var i = 0; i < results.length; i++) {
+          this.logoProfile = results[i];
+          alert(results[i])
+          // this.base64.encodeFile(results[i]).then((base64File: string) => {
+          //   this.regData.avatar = base64File;
+          // }, (err) => {
+          //   console.log(err);
+          // });
+      }
+    }, (err) => { });
+  }
+
+  file2(e){
+    alert(e.target.files[0])
+  }
+
+  createUser(){
+    this.user.email = this._email.value
+    this.user.name = this._name.value
+    this.user.password = this._password.value
+    if(!this.user.photo){
+      this.user.photo = "";
+    }
+    this.registerService.createUser(this.user)
   }
 }

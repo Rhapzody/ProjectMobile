@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
-
+import { AngularFirestore } from 'angularfire2/firestore';
+import { User } from '../../models/users';
 
 /*
   Generated class for the RegisterServiceProvider provider.
@@ -12,7 +13,7 @@ import firebase from 'firebase';
 @Injectable()
 export class RegisterServiceProvider {
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, private db: AngularFirestore) {
     console.log('Hello RegisterServiceProvider Provider');
   }
 
@@ -26,6 +27,24 @@ export class RegisterServiceProvider {
     storage.ref('profile/' + name).put(blob).then(d => {
       alert(d)
     }).catch(err => {
+      alert(JSON.stringify(err))
+    })
+  }
+
+  createUser(user: User){
+    console.log(user);
+    
+    this.db.collection('users').doc(user.email).set({
+      email: user.email,
+      name: user.name,
+      password: user.password,
+      photo: user.photo,
+      registime: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(data => {
+      console.log(data);
+      alert(JSON.stringify(data))
+    }).catch(err=>{
+      console.log(err);
       alert(JSON.stringify(err))
     })
   }

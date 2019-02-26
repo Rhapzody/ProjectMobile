@@ -27,6 +27,7 @@ import { RegisterPage } from '../pages/register/register';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
+import { ImagePicker } from '@ionic-native/image-picker';
 
 @NgModule({
   declarations: [
@@ -61,13 +62,14 @@ import { FilePath } from '@ionic-native/file-path';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     UserServiceProvider,
     LoginServiceProvider,
     RegisterServiceProvider,
     FileChooser,
     File,
-    FilePath
+    FilePath,
+    ImagePicker
   ]
 })
-export class AppModule {}
+export class AppModule { }

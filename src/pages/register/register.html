@@ -11,18 +11,22 @@
 </ion-header>
 
 <ion-content padding>
+
+  <img src="{{logoProfile}}" (click)="getPhoto();" />
+
   <ion-item>
     <ion-label floating>Email</ion-label>
-    <ion-input type="email"></ion-input>
+    <ion-input type="email" #email></ion-input>
   </ion-item>
   <ion-item>
     <ion-label floating>Name</ion-label>
-    <ion-input type="text"></ion-input>
+    <ion-input type="text" #name></ion-input>
   </ion-item>
   <ion-item>
     <ion-label floating>Password</ion-label>
-    <ion-input type="email"></ion-input>
+    <ion-input type="email" #password></ion-input>
   </ion-item>
 
-  <button ion-button full (click)="chooseFile();">UPLOAD</button>
+  <button ion-button full (click)="getPhoto();">UPLOAD</button>
+  <button ion-button full (click)="createUser();">REGISTER</button>
 </ion-content>
