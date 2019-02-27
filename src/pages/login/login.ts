@@ -35,9 +35,12 @@ export class LoginPage {
     // this.navCtrl.push(TabsPage)
     // console.log(this._email.value);
 
-    this.loginService.checkEmailAndPassword(this._email.value, this._password.value).subscribe(user => {
-      if (user.length == 1) {
-        this.navCtrl.push(TabsPage);
+    this.loginService.checkEmailAndPassword(this._email.value, this._password.value).then(user => {
+
+      if (!user.empty) {
+        user.forEach(data => {
+          this.navCtrl.push(TabsPage, { "user": data.data() });
+        })
       } else {
         // alert('email or password invalid.')
         this.email_and_password = false;
@@ -50,7 +53,7 @@ export class LoginPage {
     this.navCtrl.push(RegisterPage);
   }
 
-  openChat(){
+  openChat() {
     this.navCtrl.push(ChatPage, {
       chatName: "Mr. X"
     });

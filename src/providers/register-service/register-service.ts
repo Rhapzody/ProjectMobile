@@ -21,7 +21,7 @@ export class RegisterServiceProvider {
   createUser(user: User) {
     console.log(user);
 
-    return this.db.collection('users').doc(user.email).set({
+    return this.db.collection('users', ref => ref.where('email', '==', user.email)).doc(user.email).set({
       email: user.email,
       name: user.name,
       password: user.password,
@@ -46,8 +46,11 @@ export class RegisterServiceProvider {
     // })
   }
 
-  checkEmailDuplicate(email){
-    return this.db.collection('users').doc(email).valueChanges()
+  checkEmailDuplicate(email) {
+    console.log('50 service');
+    
+    return firebase.firestore().collection('users').doc(email).get()
+    
   }
 
 }

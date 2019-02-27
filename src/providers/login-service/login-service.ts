@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { User } from '../../models/users';
+import firebase from 'firebase';
 
 /*
   Generated class for the LoginServiceProvider provider.
@@ -23,7 +24,7 @@ export class LoginServiceProvider {
   checkEmailAndPassword(email: string, password: string) {
     console.log('23 loginservice');
 
-    return this.db.collection('users', ref => ref.where('email', '==', email).where("password", "==", password)).valueChanges();
+    return firebase.firestore().collection('users').where('email', '==', email).where('password', '==', password).get();
   }
 
 }

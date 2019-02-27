@@ -30,6 +30,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { ImagePicker } from '@ionic-native/image-picker';
 import {  Base64 } from '@ionic-native/base64';
 import { Camera } from '@ionic-native/camera'
+import { FirebaseStorageProvider } from '../providers/firebase-storage/firebase-storage';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { Camera } from '@ionic-native/camera'
     FilePath,
     ImagePicker,
     Base64,
-    Camera
+    Camera,
+    FirebaseStorageProvider
   ]
 })
 export class AppModule { }
