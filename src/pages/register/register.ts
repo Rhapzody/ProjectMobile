@@ -71,7 +71,12 @@ export class RegisterPage {
               this.altController.create({
                 title: 'succes',
                 subTitle: 'สมัครสมาชิกเรียบร้อย',
-                buttons: ['OK']
+                buttons: [{
+                  text:'OK',
+                  handler: () => {
+                    this.getUserByEmailAndPass(this.user.email, this.user.password)
+                  }
+                }]
               }).present();
             }).catch(() => {
               this.altController.create({
