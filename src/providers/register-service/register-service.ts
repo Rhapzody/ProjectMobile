@@ -48,9 +48,9 @@ export class RegisterServiceProvider {
 
   checkEmailDuplicate(email) {
     console.log('50 service');
-    
+
     return firebase.firestore().collection('users').doc(email).get()
-    
+
   }
 
 }
