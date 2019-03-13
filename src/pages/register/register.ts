@@ -71,7 +71,11 @@ export class RegisterPage {
                 title: 'succes',
                 subTitle: 'สมัครสมาชิกเรียบร้อย',
                 buttons: [{
+<<<<<<< HEAD
                   text: 'OK',
+=======
+                  text:'OK',
+>>>>>>> master
                   handler: () => {
                     this.getUserByEmailAndPass(this.user.email, this.user.password)
                   }
