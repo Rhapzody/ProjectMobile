@@ -18,7 +18,8 @@
         <ion-grid>
           <ion-row>
             <ion-col col-2 text-left>
-              <img class="friend-img" src="" alt="">
+              <img class="friend-img" src="https://cache.gmo2.sistacafe.com/images/uploads/summary/image/41751/3e9fea8de38ad5631fd691a1e9c54c26.jpg"
+                alt="">
             </ion-col>
             <ion-col col-10>
               <p>{{msg}}</p>
@@ -34,7 +35,7 @@
               <p>{{msg}}</p>
             </ion-col>
             <ion-col col-2>
-              <img class="friend-img" src="" alt="">
+              <img class="friend-img" src="https://picpost.postjung.com/data/184/184340-1-2995.jpg" alt="">
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -48,10 +49,9 @@
   <ion-toolbar color="primary">
     <ion-textarea (keyup.enter)="doSend()" [(ngModel)]="input" placeholder="Enter your message" name="message"></ion-textarea>
     <ion-buttons end>
-      <button (click)="doSend()" ion-button icon-only >
+      <button (click)="doSend()" ion-button icon-only>
         <ion-icon name="send" color="light"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
-
 </ion-footer>

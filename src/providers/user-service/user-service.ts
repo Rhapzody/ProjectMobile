@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import firebase from 'firebase';
 
 /*
   Generated class for the UserServiceProvider provider.
@@ -14,6 +15,10 @@ export class UserServiceProvider {
     console.log('Hello UserServiceProvider Provider');
   }
 
-  
+  checkEmailUser(email: string) {
+    console.log(email);
+    
+    return firebase.firestore().collection('users').where('email', '==', email).get()
+  }
 
 }

@@ -25,6 +25,8 @@ export class ContactPage {
   ionViewWillEnter() {
     console.log('26');
     this.user = this.param.data;
+    console.log(this.user);
+    
     if (!this.logoProfile) {
       if (this.user.photo != '') {
         this.firebaseSto.getURLImg(this.user.email, this.user.photo).then(url => {

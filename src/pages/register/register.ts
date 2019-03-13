@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { RegisterServiceProvider } from '../../providers/register-service/register-service';
-import { AngularFireStorage } from 'angularfire2/storage';
 import { User } from '../../models/users';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { TabsPage } from '../tabs/tabs';
@@ -71,7 +70,12 @@ export class RegisterPage {
               this.altController.create({
                 title: 'succes',
                 subTitle: 'สมัครสมาชิกเรียบร้อย',
-                buttons: ['OK']
+                buttons: [{
+                  text: 'OK',
+                  handler: () => {
+                    this.getUserByEmailAndPass(this.user.email, this.user.password)
+                  }
+                }]
               }).present();
             }).catch(() => {
               this.altController.create({

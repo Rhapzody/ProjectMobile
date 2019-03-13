@@ -31,6 +31,8 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import {  Base64 } from '@ionic-native/base64';
 import { Camera } from '@ionic-native/camera'
 import { FirebaseStorageProvider } from '../providers/firebase-storage/firebase-storage';
+import { ModalprofilefriendPage } from '../pages/modalprofilefriend/modalprofilefriend';
+import { AddfriendPage } from '../pages/addfriend/addfriend';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { FirebaseStorageProvider } from '../providers/firebase-storage/firebase-
     TabsPage,
     LoginPage,
     RegisterPage,
-    ChatPage
+    ChatPage,
+    ModalprofilefriendPage,
+    AddfriendPage
   ],
   imports: [
     BrowserModule,
@@ -60,7 +64,9 @@ import { FirebaseStorageProvider } from '../providers/firebase-storage/firebase-
     TabsPage,
     LoginPage,
     RegisterPage,
-    ChatPage
+    ChatPage,
+    ModalprofilefriendPage,
+    AddfriendPage
   ],
   providers: [
     StatusBar,

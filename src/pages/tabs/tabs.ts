@@ -11,6 +11,8 @@ import { NavParams } from 'ionic-angular';
 })
 export class TabsPage {
 
+  selectedIndex = 0;
+
   tab1Root = HomePage;
   tab2Root = AboutPage;
   tab3Root = ContactPage;
@@ -22,9 +24,18 @@ export class TabsPage {
   }
 
   ionViewWillEnter() {
-    this.user = this.param.get('user')
-    console.log(this.user)
-    alert(JSON.stringify(this.user))
+    // console.log(this.param.get("page"));
+    // if (this.param.get("page")) {
+    //   this.selectedIndex = this.param.get("selectedIndex");
+    //   console.log(this.selectedIndex);
+      
+    // }
+    if (this.param.get('user')) {
+      this.user = this.param.get('user')
+      console.log(this.user)
+      // alert(JSON.stringify(this.user))
+    }
+
   }
 
   ionTabsWillChange() {

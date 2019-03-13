@@ -1,11 +1,46 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      About
+      Chat
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
+<ion-list >
+  <ion-item (click)="onClickOpenChat()">
+    <ion-avatar item-left>
+      <img src="https://cache.gmo2.sistacafe.com/images/uploads/summary/image/41751/3e9fea8de38ad5631fd691a1e9c54c26.jpg">
+    </ion-avatar>
+    <ion-grid>
+      <ion-row>
+        <ion-col >
+          NAME
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col >
+          <p>ข้อความล่าสุด</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+  <ion-item >
+    <ion-avatar item-left>
+      <img src="https://cache.gmo2.sistacafe.com/images/uploads/summary/image/41751/3e9fea8de38ad5631fd691a1e9c54c26.jpg">
+    </ion-avatar>
+    <ion-grid>
+      <ion-row>
+        <ion-col >
+          NAME
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col >
+          <p>ข้อความล่าสุด</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+</ion-list>
 </ion-content>
