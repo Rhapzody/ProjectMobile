@@ -20,22 +20,32 @@ export class TabsPage {
   user: User = new User();
 
   constructor(private param: NavParams) {
-
-  }
-
-  ionViewWillEnter() {
-    // console.log(this.param.get("page"));
-    // if (this.param.get("page")) {
-    //   this.selectedIndex = this.param.get("selectedIndex");
-    //   console.log(this.selectedIndex);
-      
-    // }
     if (this.param.get('user')) {
       this.user = this.param.get('user')
       console.log(this.user)
       // alert(JSON.stringify(this.user))
     }
 
+  }
+
+  ionViewWillEnter() {
+
+  }
+
+  ionViewDidLoad() {
+   
+  }
+
+  ionViewDidEnter() {
+   
+  }
+
+  ionViewWillLeave() {
+    
+  }
+
+  ionViewDidLeave() {
+   ;
   }
 
   ionTabsWillChange() {

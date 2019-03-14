@@ -13,20 +13,33 @@ import { User } from '../../models/users';
 })
 export class HomePage {
 
-  user: User = new User()
+  user: User;
 
   constructor(public navCtrl: NavController, private db: AngularFirestore, private modalCtrl: ModalController, private param: NavParams) {
-
+ 
   }
 
   ionViewWillEnter() {
-    console.log(this.param.data);
-    
     this.user = this.param.data;
     console.log(this.user);
 
   }
 
+  ionViewDidLoad() {
+   
+  }
+
+  ionViewDidEnter() {
+    
+  }
+
+  ionViewWillLeave() {
+   
+  }
+
+  ionViewDidLeave() {
+   
+  }
   presentModal() {
     const modal = this.modalCtrl.create(AddfriendPage, { user: this.user });
     modal.present();
