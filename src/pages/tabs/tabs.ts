@@ -25,7 +25,6 @@ export class TabsPage {
       console.log(this.user)
       // alert(JSON.stringify(this.user))
     }
-
   }
 
   ionViewWillEnter() {
@@ -33,19 +32,19 @@ export class TabsPage {
   }
 
   ionViewDidLoad() {
-   
+
   }
 
   ionViewDidEnter() {
-   
+
   }
 
   ionViewWillLeave() {
-    
+
   }
 
   ionViewDidLeave() {
-   ;
+    ;
   }
 
   ionTabsWillChange() {

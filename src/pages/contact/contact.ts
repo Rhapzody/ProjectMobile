@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { User } from '../../models/users';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
 
@@ -12,36 +12,32 @@ export class ContactPage {
   user: User = new User()
   logoProfile: string = null
 
-  constructor(public navCtrl: NavController, private param: NavParams, private firebaseSto: FirebaseStorageProvider) {
-    console.log('16');
+  constructor(public navCtrl: NavController, private param: NavParams, private firebaseSto: FirebaseStorageProvider, private loadingCtrl: LoadingController) {
 
-    // this.user = this.param.data;
-    // this.firebaseSto.getURLImg(this.user.email, this.user.photo).then(url => {
-    //   console.log(url);
-    //   this.logoProfile = url;
-    // })
   }
 
   ionViewWillEnter() {
-    console.log('26');
-    this.user = this.param.data;
-    console.log(this.user);
-    
-    if (!this.logoProfile) {
-      if (this.user.photo != '') {
-        this.firebaseSto.getURLImg(this.user.email, this.user.photo).then(url => {
-          console.log(url);
-          this.logoProfile = url;
-        })
-      } else {
-        this.logoProfile = "https://png.pngtree.com/svg/20170827/people_106508.png";
-      }
-    }
 
   }
 
   ionViewDidLoad() {
-    console.log('31');
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    })
 
+    loading.present().then(() => {
+      this.user = this.param.data;
+      if (!this.logoProfile) {
+        if (this.user.photo != '') {
+          this.firebaseSto.getURLImg(this.user.email, this.user.photo).then(url => {
+            this.logoProfile = url;
+            loading.dismiss()
+          })
+        } else {
+          this.logoProfile = "https://png.pngtree.com/svg/20170827/people_106508.png";
+          loading.dismiss()
+        }
+      }
+    })
   }
 }

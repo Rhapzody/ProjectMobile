@@ -4,5 +4,5 @@ export class User {
     password: string;
     photo: string;
     registime: Date;
-    friends: Array<object>;
+    friends: Array<User>;
 }

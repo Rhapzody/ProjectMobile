@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { RegisterServiceProvider } from '../../providers/register-service/register-service';
 import { User } from '../../models/users';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -31,7 +31,7 @@ export class RegisterPage {
 
 
   constructor(public navCtrl: NavController,
-    public navParams: NavParams, private registerService: RegisterServiceProvider, private camera: Camera, private altController: AlertController, private loginService: LoginServiceProvider) {
+    public navParams: NavParams, private registerService: RegisterServiceProvider, private camera: Camera, private altController: AlertController, private loginService: LoginServiceProvider, public loadingCtrl: LoadingController) {
   }
 
   ionViewDidLoad() {
@@ -39,84 +39,97 @@ export class RegisterPage {
   }
 
   createUser() {
-    this.user.email = this._email.value
-    this.user.name = this._name.value
-    this.user.password = this._password.value
-    if (this.user.email == '' || this.user.name == '' || this.user.password == '') {
-      console.log('50');
-      this.altController.create({
-        title: 'คำเตือน',
-        subTitle: 'กรุณากรอกข้อมูลให้ครบทุกช่อง',
-        buttons: ['OK']
-      }).present()
-    } else {
-      console.log('53');
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    })
 
-      this.registerService.checkEmailDuplicate(this.user.email).then(data => {
-        console.log(data);
-
-        if (data.exists) {
+    loading.present().then(() => {
+      this.user.email = this._email.value
+      this.user.name = this._name.value
+      this.user.password = this._password.value
+      if (this.user.email == '' || this.user.name == '' || this.user.password == '') {
+        loading.dismiss().then(() => {
           this.altController.create({
-            title: 'ERROR',
-            subTitle: 'Email นี้มีในระบบแล้ว',
+            title: 'คำเตือน',
+            subTitle: 'กรุณากรอกข้อมูลให้ครบทุกช่อง',
             buttons: ['OK']
-          }).present();
-        } else {
-          console.log('63');
-
-          if (!this.user.photo) {
-            this.user.photo = "";
-            this.registerService.createUser(this.user).then(() => {
+          }).present()
+        })
+      } else {
+        this.registerService.checkEmailDuplicate(this.user.email).then(data => {
+          if (data.exists) {
+            loading.dismiss().then(() => {
               this.altController.create({
-                title: 'succes',
-                subTitle: 'สมัครสมาชิกเรียบร้อย',
-                buttons: [{
-                  text: 'OK',
-                  handler: () => {
-                    this.getUserByEmailAndPass(this.user.email, this.user.password)
-                  }
-                }]
-              }).present();
-            }).catch(() => {
-              this.altController.create({
-                title: 'error',
-                subTitle: 'db firestore.',
+                title: 'ERROR',
+                subTitle: 'Email นี้มีในระบบแล้ว',
                 buttons: ['OK']
               }).present();
             })
           } else {
-            this.registerService.uploadImg(this.user).then(() => {
-              this.user.photo = this._name.value;
+            if (!this.user.photo) {
+              this.user.photo = "";
               this.registerService.createUser(this.user).then(() => {
-                this.altController.create({
-                  title: 'succes',
-                  subTitle: 'สมัครสมาชิกเรียบร้อย',
-                  buttons: [{
-                    text: 'OK',
-                    handler: () => {
-                      this.getUserByEmailAndPass(this.user.email, this.user.password)
-                    }
-                  }]
-                }).present();
+                loading.dismiss().then(() => {
+                  this.altController.create({
+                    title: 'succes',
+                    subTitle: 'สมัครสมาชิกเรียบร้อย',
+                    buttons: [{
+                      text: 'OK',
+                      handler: () => {
+                        this.getUserByEmailAndPass(this.user.email, this.user.password)
+                      }
+                    }]
+                  }).present();
+                })
               }).catch(() => {
-                this.altController.create({
-                  title: 'error',
-                  subTitle: 'db firestore.',
-                  buttons: ['OK']
-                }).present();
+                loading.dismiss().then(() => {
+                  this.altController.create({
+                    title: 'error',
+                    subTitle: 'db firestore.',
+                    buttons: ['OK']
+                  }).present();
+                })
               })
-            }).catch(() => {
-              this.altController.create({
-                title: 'error',
-                subTitle: 'upload file',
-                buttons: ['OK']
-              }).present();
-            })
+            } else {
+              this.registerService.uploadImg(this.user).then(() => {
+                this.user.photo = this._name.value;
+                this.registerService.createUser(this.user).then(() => {
+                  loading.dismiss().then(() => {
+                    this.altController.create({
+                      title: 'succes',
+                      subTitle: 'สมัครสมาชิกเรียบร้อย',
+                      buttons: [{
+                        text: 'OK',
+                        handler: () => {
+                          this.getUserByEmailAndPass(this.user.email, this.user.password)
+                        }
+                      }]
+                    }).present();
+                  })
+                }).catch(() => {
+                  loading.dismiss().then(() => {
+                    this.altController.create({
+                      title: 'error',
+                      subTitle: 'db firestore.',
+                      buttons: ['OK']
+                    }).present();
+                  })
+                })
+              }).catch(() => {
+                loading.dismiss().then(() => {
+                  this.altController.create({
+                    title: 'error',
+                    subTitle: 'upload file',
+                    buttons: ['OK']
+                  }).present();
+                })
+              })
+            }
           }
-        }
+        })
+      }
+    })
 
-      })
-    }
   }
 
   takePhoto() {

@@ -4,6 +4,7 @@ import { LoginServiceProvider } from '../../providers/login-service/login-servic
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
 import { ChatPage } from '../chat/chat';
+import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 /**
  * Generated class for the LoginPage page.
@@ -24,7 +25,7 @@ export class LoginPage {
   @ViewChild('email') _email
   @ViewChild('password') _password
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private loginService: LoginServiceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private loginService: LoginServiceProvider, private userService: UserServiceProvider) {
   }
 
   ionViewDidLoad() {
@@ -39,6 +40,7 @@ export class LoginPage {
 
       if (!user.empty) {
         user.forEach(data => {
+          
           this.navCtrl.push(TabsPage, { "user": data.data() });
         })
       } else {
