@@ -26,7 +26,8 @@ export class RegisterServiceProvider {
       name: user.name,
       password: user.password,
       photo: user.photo,
-      registime: firebase.firestore.FieldValue.serverTimestamp()
+      registime: firebase.firestore.FieldValue.serverTimestamp(),
+      friends: new Array()
     })
     // .then(data => {
     //   console.log(data);

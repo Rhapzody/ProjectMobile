@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
 import { User } from 'firebase';
@@ -25,7 +25,7 @@ export class AddfriendPage {
 
   user: User;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private userService: UserServiceProvider, private firebaseSto: FirebaseStorageProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private userService: UserServiceProvider, private firebaseSto: FirebaseStorageProvider, private altCon: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -35,7 +35,7 @@ export class AddfriendPage {
   ionViewWillEnter() {
     this.user = this.navParams.get('user')
     console.log(this.user);
-    
+
   }
 
   dismiss() {
@@ -57,6 +57,23 @@ export class AddfriendPage {
           this.frieng_img = url;
         })
       }
+    })
+  }
+
+  onClickADD() {
+    this.userService.addFriend(this.user.email, this.email_friend).then(() => {
+      console.log(65);
+      this.altCon.create({
+        title: 'add success.',
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {
+              this.data_friend = null
+            }
+          }
+        ]
+      }).present()
     })
   }
 }
