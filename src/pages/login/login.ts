@@ -36,7 +36,7 @@ export class LoginPage {
     // this.navCtrl.push(TabsPage)
     // console.log(this._email.value);
 
-    this.loginService.checkEmailAndPassword(this._email.value, this._password.value).then(user => {
+    this.loginService.checkEmailAndPassword(this._email.value, this._password.value).onSnapshot(user => {
 
       if (!user.empty) {
         user.forEach(data => {

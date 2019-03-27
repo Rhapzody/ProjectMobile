@@ -44,20 +44,41 @@ export class AddfriendPage {
 
   onClickSearch() {
     console.log('33');
+    if (this.user.email == this.email_friend) {
+      this.altCon.create({
+        title: 'email ตัวเอง จะหาทำพรือ',
+        buttons: [
+          {
+            text: 'OK'
+          }
+        ]
+      }).present()
+    } else {
+      this.userService.checkEmailUser(this.email_friend).then(data => {
 
-    this.userService.checkEmailUser(this.email_friend).then(data => {
-      console.log(data.docs[0].data());
-      this.data_friend = data.docs[0].data()
+        if (data.docs[0]) {
+          this.data_friend = data.docs[0].data()
 
-      if (this.data_friend.photo == '') {
-        this.frieng_img = "https://png.pngtree.com/svg/20170827/people_106508.png";
-      } else {
-        this.firebaseSto.getURLImg(this.data_friend.email, this.data_friend.photo).then(url => {
-          console.log(url);
-          this.frieng_img = url;
-        })
-      }
-    })
+          if (this.data_friend.photo == '') {
+            this.frieng_img = "https://png.pngtree.com/svg/20170827/people_106508.png";
+          } else {
+            this.firebaseSto.getURLImg(this.data_friend.email, this.data_friend.photo).then(url => {
+              console.log(url);
+              this.frieng_img = url;
+            })
+          }
+        } else {
+          this.altCon.create({
+            title: 'ไม่มี email นี้',
+            buttons: [
+              {
+                text: 'OK'
+              }
+            ]
+          }).present()
+        }
+      })
+    }
   }
 
   onClickADD() {

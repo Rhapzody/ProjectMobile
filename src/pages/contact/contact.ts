@@ -10,7 +10,6 @@ import { FirebaseStorageProvider } from '../../providers/firebase-storage/fireba
 export class ContactPage {
 
   user: User = new User()
-  logoProfile: string = null
 
   constructor(public navCtrl: NavController, private param: NavParams, private firebaseSto: FirebaseStorageProvider, private loadingCtrl: LoadingController) {
 
@@ -27,17 +26,7 @@ export class ContactPage {
 
     loading.present().then(() => {
       this.user = this.param.data;
-      if (!this.logoProfile) {
-        if (this.user.photo != '') {
-          this.firebaseSto.getURLImg(this.user.email, this.user.photo).then(url => {
-            this.logoProfile = url;
-            loading.dismiss()
-          })
-        } else {
-          this.logoProfile = "https://png.pngtree.com/svg/20170827/people_106508.png";
-          loading.dismiss()
-        }
-      }
+      loading.dismiss();
     })
   }
 }

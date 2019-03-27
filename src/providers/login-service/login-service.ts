@@ -24,7 +24,7 @@ export class LoginServiceProvider {
   checkEmailAndPassword(email: string, password: string) {
     console.log('23 loginservice');
 
-    return firebase.firestore().collection('users').where('email', '==', email).where('password', '==', password).get()
+    return firebase.firestore().collection('users').where('email', '==', email).where('password', '==', password)
   }
 
 }

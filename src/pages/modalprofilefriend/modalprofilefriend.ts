@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, ViewController, App } from 'ionic-
 import { AboutPage } from '../about/about';
 import { ChatPage } from '../chat/chat';
 import { TabsPage } from '../tabs/tabs';
+import { User } from '../../models/users';
+import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 
 /**
  * Generated class for the ModalprofilefriendPage page.
@@ -18,7 +20,10 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class ModalprofilefriendPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private app: App) {
+  friend: User;
+  user: User;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private chatService: ChatServiceProvider) {
   }
 
   ionViewDidLoad() {
@@ -30,21 +35,26 @@ export class ModalprofilefriendPage {
   }
 
   onClickOpenChat() {
-    console.log('4546');
-
-    // this.dismiss();
-    // this.app.getActiveNavs()[0].push(ChatPage)
-    this.navCtrl.setRoot(TabsPage, {
-      selectedIndex: 1,
-      page: 'chat'
+    this.chatService.checkRoomChat(this.user.email, this.friend.email).then((room) => {
+      if (room.data()) {
+        this.navCtrl.push(ChatPage, { friend: this.friend, user: this.user })
+      } else {
+        this.chatService.createRoomChat(this.user.email, this.friend.email).then((doc) => {
+          this.navCtrl.push(ChatPage, { friend: this.friend, user: this.user })
+        })
+      }
     })
-
-    this.navCtrl.push(ChatPage)
-
   }
 
   ionViewWillLeave() {
     console.log('41');
 
+  }
+
+  ionViewWillEnter() {
+    console.log(this.navParams.get('user'));
+
+    this.friend = this.navParams.get('friend');
+    this.user = this.navParams.get('user');
   }
 }

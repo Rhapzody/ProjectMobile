@@ -33,6 +33,7 @@ import { Camera } from '@ionic-native/camera'
 import { FirebaseStorageProvider } from '../providers/firebase-storage/firebase-storage';
 import { ModalprofilefriendPage } from '../pages/modalprofilefriend/modalprofilefriend';
 import { AddfriendPage } from '../pages/addfriend/addfriend';
+import { ChatServiceProvider } from '../providers/chat-service/chat-service';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { AddfriendPage } from '../pages/addfriend/addfriend';
     ImagePicker,
     Base64,
     Camera,
-    FirebaseStorageProvider
+    FirebaseStorageProvider,
+    ChatServiceProvider,
   ]
 })
 export class AppModule { }

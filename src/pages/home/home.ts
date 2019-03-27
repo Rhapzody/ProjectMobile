@@ -5,6 +5,7 @@ import { AddfriendPage } from '../addfriend/addfriend';
 import { User } from '../../models/users';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
+import { ModalprofilefriendPage } from '../modalprofilefriend/modalprofilefriend';
 
 @Component({
   selector: 'page-home',
@@ -24,6 +25,8 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+    console.log('didload 28 home');
+    
     let loading = this.loadingCtrl.create({
       content: "Please wait..."
     })
@@ -71,10 +74,16 @@ export class HomePage {
   ionViewDidLeave() {
 
   }
+
   presentModal() {
     const modal = this.modalCtrl.create(AddfriendPage, { user: this.user });
     modal.present();
     // this.navCtrl.push(AddfriendPage)
+  }
+
+  onClickChancePage(friend){
+    console.log(friend);
+    this.navCtrl.push(ModalprofilefriendPage, {friend, user: this.user})
   }
 
 
