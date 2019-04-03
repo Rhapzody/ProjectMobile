@@ -151,7 +151,7 @@ export class RegisterPage {
   }
 
   getUserByEmailAndPass(email, password) {
-    this.loginService.checkEmailAndPassword(email, password).then(user => {
+    this.loginService.checkEmailAndPassword(email, password).get().then(user => {
 
       if (!user.empty) {
         user.forEach(data => {

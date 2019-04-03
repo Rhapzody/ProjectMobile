@@ -8,7 +8,24 @@
 
 <ion-content padding>
 <ion-list >
-  <ion-item (click)="onClickOpenChat()">
+  <ion-item *ngFor="let room of rooms;" (click)="onClickOpenChat(room)">
+    <ion-avatar item-left>
+      <img src="{{room.friend.photo}}">
+    </ion-avatar>
+    <ion-grid>
+      <ion-row>
+        <ion-col >
+          {{room.friend.name}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngIf="room.messages">
+          <p *ngIf="room.messages.length > 0">{{room.messages[room.messages.length-1].content}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+  <!-- <ion-item >
     <ion-avatar item-left>
       <img src="https://cache.gmo2.sistacafe.com/images/uploads/summary/image/41751/3e9fea8de38ad5631fd691a1e9c54c26.jpg">
     </ion-avatar>
@@ -24,23 +41,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-  </ion-item>
-  <ion-item >
-    <ion-avatar item-left>
-      <img src="https://cache.gmo2.sistacafe.com/images/uploads/summary/image/41751/3e9fea8de38ad5631fd691a1e9c54c26.jpg">
-    </ion-avatar>
-    <ion-grid>
-      <ion-row>
-        <ion-col >
-          NAME
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col >
-          <p>ข้อความล่าสุด</p>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-item>
+  </ion-item> -->
 </ion-list>
 </ion-content>

@@ -16,33 +16,41 @@ export class ChatServiceProvider {
     console.log('Hello ChatServiceProvider Provider');
   }
 
-  checkRoomChat(email, email_friend){
-    if (email < email_friend) {
-      return firebase.firestore().collection('rooms').doc(email_friend + '_' + email).get()
-    }else{
-      return firebase.firestore().collection('rooms').doc(email + '_' + email_friend).get()
-    }
-
+  checkRoomChat(email, email_friend) {
+    return firebase.firestore().collection('rooms').doc(email + '_' + email_friend).get()
   }
 
   createRoomChat(email, email_friend) {
-    if (email < email_friend) {
-      return this.db.collection('rooms').doc(email_friend + '_' + email).set({
-        user1: email_friend,
-        user2: email
-      })
-    } else {
-      return this.db.collection('rooms').doc(email + '_' + email_friend).set({
-        user1: email,
-        user2: email_friend
-      })
-    }
+    return this.db.collection('rooms').doc(email + '_' + email_friend).set({
+      user1: email,
+      user2: email_friend
+    })
   }
 
-  createChat(){
-    
+  getRoomChat(email) {
+    return firebase.firestore().collection('rooms').where('user1', '==', email)
   }
 
+  createChat(email, email_friend, date, input) {
+    return this.db.collection('rooms').doc(email + '_' + email_friend).collection('messages').add({
+      sender: email,
+      type: 'text',
+      date: date,
+      content: input
+    })
+  }
 
+  createChatFriend(email, email_friend, date, input){
+    return this.db.collection('rooms').doc(email_friend + '_' + email).collection('messages').add({
+      sender: email,
+      type: 'text',
+      date: date,
+      content: input
+    })
+  }
+
+  getChat(email, email_friend){
+    return firebase.firestore().collection('rooms').doc(email + '_' + email_friend).collection('messages').orderBy("date")
+  }
 
 }

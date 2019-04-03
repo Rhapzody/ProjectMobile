@@ -1,38 +1,36 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{friend.name}}</ion-title>
+    <ion-title *ngIf="room">{{room.friend.name}}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding *ngIf="!isLoading">
+<ion-content padding>
 
-  <div class="message-wrap">
+  <div class="message-wrap" *ngIf="room">
 
-    <div *ngFor="let a of arr">
+    <div *ngFor="let message of room.messages">
 
-      <div class="sender" *ngIf="isTrue">
+      <div class="sender" *ngIf="message.sender == room.friend.email">
 
         <ion-grid>
           <ion-row>
             <ion-col col-2 text-left>
-              <img class="friend-img" [src]="friend.photo"
+              <img class="friend-img" [src]="room.friend.photo"
                 alt="">
             </ion-col>
             <ion-col col-10>
-              <p>{{msg}}</p>
+              <p>{{room.messages.content}}</p>
             </ion-col>
           </ion-row>
         </ion-grid>
       </div>
 
-      <div class="me" *ngIf="isTrue">
+      <div class="me" *ngIf="message.sender == user.email">
         <ion-grid>
           <ion-row>
             <ion-col col-10>
-              <p>{{msg}}</p>
+              <p>{{message.content}}</p>
             </ion-col>
             <ion-col col-2>
               <img class="friend-img" [src]="user.photo" alt="">

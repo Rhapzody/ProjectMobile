@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { User } from '../../models/users';
+import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
+import { Room } from '../../models/rooms';
 
 @IonicPage()
 @Component({
@@ -13,10 +15,11 @@ export class ChatPage {
   arr = [1, 2, 3];
   isTrue = true;
   // chatName: string;
-  friend: User = new User();
-  user: User = new User();
+  room: Room;
+  user: User;
+  input: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController, private chatService: ChatServiceProvider) {
 
   }
 
@@ -25,14 +28,15 @@ export class ChatPage {
   }
 
   ionViewWillEnter() {
-    // this.chatName = this.navParams.get("chatName");
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     })
 
     loading.present().then(() => {
-      this.friend = this.navParams.get("friend");
+      this.room = this.navParams.get("room");
       this.user = this.navParams.get("user");
+      console.log(this.room);
+
       loading.dismiss();
     })
   }
@@ -43,6 +47,21 @@ export class ChatPage {
 
 
   doSend() {
-    
+    let date = Date.now();
+    this.chatService.createChat(this.user.email, this.room.friend.email, date, this.input).then(() => {
+      this.chatService.checkRoomChat(this.room.friend.email, this.user.email).then(doc => {
+        if (doc.exists) {
+          this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, this.input).then(() => {
+
+          })
+        } else {
+          this.chatService.createRoomChat(this.room.friend.email, this.user.email).then(() => {
+            this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, this.input).then(() => {
+
+            })
+          })
+        }
+      })
+    })
   }
 }

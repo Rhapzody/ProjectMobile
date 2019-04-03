@@ -33,8 +33,6 @@ export class LoginPage {
   }
 
   login() {
-    // this.navCtrl.push(TabsPage)
-    // console.log(this._email.value);
 
     this.loginService.checkEmailAndPassword(this._email.value, this._password.value).onSnapshot(user => {
 
@@ -44,7 +42,6 @@ export class LoginPage {
           this.navCtrl.push(TabsPage, { "user": data.data() });
         })
       } else {
-        // alert('email or password invalid.')
         this.email_and_password = false;
       }
     })

@@ -16,7 +16,8 @@ export class HomePage {
   user: User;
   friends: Array<User>;
 
-  constructor(public navCtrl: NavController, private db: AngularFirestore, private modalCtrl: ModalController, private param: NavParams, private userService: UserServiceProvider, private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, private db: AngularFirestore, private modalCtrl: ModalController, private param: NavParams, private userService: UserServiceProvider, 
+    private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController) {
 
   }
 

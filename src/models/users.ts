@@ -1,3 +1,5 @@
+import { Room } from "./rooms";
+
 export class User {
     email: string;
     name: string;
@@ -5,4 +7,5 @@ export class User {
     photo: string;
     registime: Date;
     friends: Array<User>;
+    rooms: Array<Room>;
 }
