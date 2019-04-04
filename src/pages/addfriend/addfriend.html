@@ -36,7 +36,18 @@
     </ion-item>
 
     <ion-list style="margin-top: 20px;" *ngIf="data_friend">
-      <ion-item text-center>
+
+      <ion-item>
+        <ion-avatar item-start>
+          <img [src]="frieng_img">
+        </ion-avatar>
+        <ion-label>{{data_friend.name}}</ion-label>
+        <ion-avatar item-end>
+          <button ion-button clear *ngIf="!checkFriend" (click)="onClickADD()">add</button>
+          <button ion-button clear *ngIf="checkFriend">ขอเป็นเพื่อนแล้ว</button>
+        </ion-avatar>
+      </ion-item>
+      <!-- <ion-item text-center>
         <img [src]="frieng_img">
       </ion-item>
       <ion-item>
@@ -46,7 +57,7 @@
         <ion-buttons end>
           <button ion-button (click)="onClickADD()">add</button>
         </ion-buttons>
-      </ion-item>
+      </ion-item> -->
     </ion-list>
   </ion-list>
 </ion-content>
