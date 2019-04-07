@@ -52,12 +52,12 @@ export class ChatPage {
       this.chatService.checkRoomChat(this.room.friend.email, this.user.email).then(doc => {
         if (doc.exists) {
           this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, this.input).then(() => {
-
+            this.input = '';
           })
         } else {
           this.chatService.createRoomChat(this.room.friend.email, this.user.email).then(() => {
             this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, this.input).then(() => {
-
+              this.input = '';
             })
           })
         }
