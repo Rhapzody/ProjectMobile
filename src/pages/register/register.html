@@ -1,40 +1,45 @@
-<!--
-  Generated template for the RegisterPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-  <ion-navbar>
-    <ion-title>register</ion-title>
+  <ion-navbar color="blue">
+    <ion-title>
+      <ion-icon name="md-person-add"></ion-icon> Register
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <div>
-    <img [src]="logoProfile" (click)="takePhoto();" />
+  <ion-grid>
+    <ion-row>
+      <ion-col col-2></ion-col>
+      <ion-col>
+        <div>
+          <img [src]="logoProfile" (click)="takePhoto();" />
+        </div>
+      </ion-col>
+      <ion-col col-2></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div padding text-center>
+    <button ion-button round color="light" icon-right (click)="takePhoto();">
+      {{ 'Choose Image' }} <ion-icon name="cloud-upload"></ion-icon>
+    </button>
   </div>
 
-
-  <div style="text-align: center;">
-    <button ion-button (click)="takePhoto();">CHOOSE FILE</button>
-  </div>
-
-
-  <ion-item>
-    <ion-label floating>Email</ion-label>
-    <ion-input type="email" #email></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label floating>Name</ion-label>
+  <form>
+    <ion-label>{{ 'Username' }}</ion-label>
     <ion-input type="text" #name></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label floating>Password</ion-label>
+
+    <ion-label float>{{ 'Email'  }}</ion-label>
+    <ion-input type="email" #email></ion-input>
+
+    <ion-label float>{{ 'Password' }}</ion-label>
     <ion-input type="password" #password></ion-input>
-  </ion-item>
-  <div>
-    <button ion-button full (click)="createUser();" style="margin-top: 25px;">REGISTER</button>
-  </div>
+
+    <div padding text-center>
+      <button ion-button round color="light" icon-right (click)="createUser();">
+        {{ 'Register' }} <ion-icon name="md-person-add"></ion-icon>
+      </button>
+    </div>
+  </form>
 </ion-content>

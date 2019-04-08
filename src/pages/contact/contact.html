@@ -1,7 +1,8 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="blue">
     <ion-title>
-      Profile
+      <ion-icon ios="ios-document" md="md-document"></ion-icon>
+      My Profile
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -9,9 +10,17 @@
 <ion-content padding>
   <div *ngIf="user">
 
-    <div>
-      <img [src]="user.photo" style="border-radius: 50%;"/>
-    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-2></ion-col>
+        <ion-col>
+          <div>
+            <img [src]="user.photo" style="border-radius: 25%;" />
+          </div>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+    </ion-grid>
 
     <ion-item>
       <ion-label fixed>Email</ion-label>

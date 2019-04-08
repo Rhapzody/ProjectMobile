@@ -1,33 +1,32 @@
-<!--
-  Generated template for the LoginPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<!-- <ion-header>
-  <ion-navbar>
-    <ion-title>login</ion-title>
-  </ion-navbar>
-</ion-header> -->
-
 <ion-content padding>
 
-  <ion-item *ngIf="!email_and_password">
-    <ion-label>Email or Password Invalid.</ion-label>
-  </ion-item>
-
-  <ion-item>
-    <ion-label floating>Email</ion-label>
-    <ion-input #email type="text"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label floating>Password</ion-label>
-    <ion-input #password type="password"></ion-input>
-  </ion-item>
-
-  <div padding>
-    <button ion-button full (click)="login()">login</button>
-    <button ion-button full (click)="register()" >register</button>
-    <button ion-button full (click)="openChat()" >Open Demo Chat Page</button>
+  <div id="logo" padding text-center>
+    <img src="./assets/imgs/chat.png">
   </div>
+
+  <ion-list no-lines>
+
+    <ion-item *ngIf="!email_and_password">
+      <ion-label>Email or Password Invalid.</ion-label>
+    </ion-item>
+
+    <ion-item style="margin-bottom: 5px">
+      <ion-input #email type="email" placeholder="Email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input #password type="password" placeholder="Password"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <div padding text-center>
+    <button ion-button round color="light" icon-right (click)="login()">
+      {{ 'Login' }} <ion-icon name="md-log-in"></ion-icon>
+    </button>
+    <button ion-button round color="light" icon-right (click)="register()">
+      {{ 'Register' }} <ion-icon name="md-person-add"></ion-icon>
+    </button>
+  </div>
+
 </ion-content>

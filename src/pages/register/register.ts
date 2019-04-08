@@ -6,12 +6,6 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { TabsPage } from '../tabs/tabs';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 
-/**
- * Generated class for the RegisterPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -27,7 +21,7 @@ export class RegisterPage {
   @ViewChild('name') _name;
   @ViewChild('password') _password;
 
-  logoProfile: string = "https://png.pngtree.com/svg/20170827/people_106508.png";
+  logoProfile: string = "assets/imgs/user.png";
 
 
   constructor(public navCtrl: NavController,

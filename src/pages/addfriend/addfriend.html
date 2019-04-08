@@ -5,8 +5,8 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-    <ion-title>addfriend</ion-title>
+  <ion-navbar color="blue">
+    <ion-title><ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon> Add Friend</ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
         <span ion-text color="primary" showWhen="ios">Cancel</span>
@@ -16,7 +16,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding style="background-color: darkslategray">
+<ion-content padding style="background-color: rgb(28, 28, 53)">
   <ion-list>
     <ion-item>
       <ion-grid>
@@ -27,7 +27,7 @@
             </ion-item>
           </ion-col>
           <ion-col col-3>
-            <button ion-button icon-only (click)="onClickSearch()">
+            <button ion-button icon-only (click)="onClickSearch()" color="blue">
               <ion-icon name="search"></ion-icon>
             </button>
           </ion-col>

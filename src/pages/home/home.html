@@ -1,25 +1,29 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="blue">
     <ion-buttons end>
       <button ion-button end (click)="presentModal()">add</button>
     </ion-buttons>
-    <ion-title>Home</ion-title>
+    <ion-title><ion-icon ios="ios-home" md="md-home"></ion-icon> Home</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="friends">
-    <ion-item *ngFor="let friend of friends;" (click)="onClickChancePage(friend);">
-      <ion-avatar item-left>
-        <img [src]="friend.photo">
-      </ion-avatar>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            {{friend.name}}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
+
+  <ion-list>
+    <ion-item-sliding #sliding *ngFor="let friend of friends;">
+      <ion-item>
+        <ion-avatar item-start>
+          <img [src]="friend.photo">
+        </ion-avatar>
+        <h2>{{friend.name}} <span ion-text color="primary">({{friend.email}})</span></h2>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="blue" (click)="onClickChancePage(friend);">
+          <ion-icon name="person"></ion-icon>
+          Profile
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
+
 </ion-content>

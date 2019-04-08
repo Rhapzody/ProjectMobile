@@ -50,7 +50,9 @@ import { ChatServiceProvider } from '../providers/chat-service/chat-service';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{
+      mode:"ios"
+    }),
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
     AngularFireStorageModule,

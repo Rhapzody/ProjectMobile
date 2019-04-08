@@ -1,7 +1,11 @@
 
 <ion-header>
-  <ion-navbar>
-    <ion-title>modalprofilefriend</ion-title>
+  <ion-navbar color="blue">
+    <ion-title><ion-icon ios="ios-paper" md="md-paper"></ion-icon>
+      <span *ngIf="friend">
+        {{friend.name}}'s Profile
+      </span>
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
