@@ -20,6 +20,7 @@ export class RegisterPage {
   @ViewChild('email') _email;
   @ViewChild('name') _name;
   @ViewChild('password') _password;
+  @ViewChild('tel') _tel;
 
   logoProfile: string = "assets/imgs/user.png";
 
@@ -41,7 +42,8 @@ export class RegisterPage {
       this.user.email = this._email.value
       this.user.name = this._name.value
       this.user.password = this._password.value
-      if (this.user.email == '' || this.user.name == '' || this.user.password == '') {
+      this.user.tel = this._tel.value
+      if (this.user.email == '' || this.user.name == '' || this.user.password == '' || this.user.tel == '') {
         loading.dismiss().then(() => {
           this.altController.create({
             title: 'คำเตือน',

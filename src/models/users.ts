@@ -8,4 +8,5 @@ export class User {
     registime: Date;
     friends: Array<User>;
     rooms: Array<Room>;
+    tel: string;
 }

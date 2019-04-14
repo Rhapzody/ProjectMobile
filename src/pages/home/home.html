@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="blue">
     <ion-buttons end>
-      <button ion-button end (click)="presentModal()">add</button>
+      <button ion-button end (click)="presentModal()"><ion-icon name="person-add" style="font-size: 200%;"></ion-icon></button>
     </ion-buttons>
     <ion-title><ion-icon ios="ios-home" md="md-home"></ion-icon> Home</ion-title>
   </ion-navbar>
@@ -18,12 +18,20 @@
         <h2>{{friend.name}} <span ion-text color="primary">({{friend.email}})</span></h2>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="blue" (click)="onClickChancePage(friend);">
+        <button style="width: 15%;" ion-button color="blue" (click)="onClickChancePage(friend);">
           <ion-icon name="person"></ion-icon>
           Profile
+        </button>
+        <button style="width: 15%;" ion-button color="secondary" (click)="Telephone(friend);">
+          <ion-icon name="call"></ion-icon>
+          Call
         </button>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <ion-fab right bottom>
+    <button ion-fab color="dark" (click)="signout();"><ion-icon name="log-out"></ion-icon></button>
+  </ion-fab>
 
 </ion-content>

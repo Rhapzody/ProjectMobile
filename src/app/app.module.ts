@@ -35,6 +35,8 @@ import { ModalprofilefriendPage } from '../pages/modalprofilefriend/modalprofile
 import { AddfriendPage } from '../pages/addfriend/addfriend';
 import { ChatServiceProvider } from '../providers/chat-service/chat-service';
 
+import { IonicStorageModule } from '@ionic/storage';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -57,6 +59,7 @@ import { ChatServiceProvider } from '../providers/chat-service/chat-service';
     AngularFirestoreModule,
     AngularFireStorageModule,
     HttpClientModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -48,20 +48,22 @@ export class ChatPage {
 
   doSend() {
     let date = Date.now();
-    this.chatService.createChat(this.user.email, this.room.friend.email, date, this.input).then(() => {
+    let input = this.input;
+    this.chatService.createChat(this.user.email, this.room.friend.email, date, input).then(() => {
       this.chatService.checkRoomChat(this.room.friend.email, this.user.email).then(doc => {
         if (doc.exists) {
-          this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, this.input).then(() => {
-            this.input = '';
+          this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, input).then(() => {
+            
           })
         } else {
           this.chatService.createRoomChat(this.room.friend.email, this.user.email).then(() => {
-            this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, this.input).then(() => {
-              this.input = '';
+            this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, input).then(() => {
+             
             })
           })
         }
       })
     })
+    this.input = '';
   }
 }

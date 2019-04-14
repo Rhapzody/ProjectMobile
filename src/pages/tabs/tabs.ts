@@ -4,8 +4,12 @@ import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
 import { HomePage } from '../home/home';
 import { User } from '../../models/users';
-import { NavParams } from 'ionic-angular';
+import { NavParams, LoadingController } from 'ionic-angular';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
+import { LoginServiceProvider } from '../../providers/login-service/login-service';
+import { async } from '@firebase/util';
+import { UserServiceProvider } from '../../providers/user-service/user-service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -20,21 +24,10 @@ export class TabsPage {
 
   user: User = new User();
 
-  constructor(private param: NavParams, private firebaseSto: FirebaseStorageProvider) {
+  constructor(private param: NavParams, private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private storage: Storage) {
     if (this.param.get('user')) {
       this.user = this.param.get('user')
-      console.log(this.user)
-      // alert(JSON.stringify(this.user))
-      if (this.user.photo != '') {
-        this.firebaseSto.getURLImg(this.user.email, this.user.photo).then(url => {
-          this.user.photo = url;
-          // loading.dismiss()
-        })
-      } else {
-        this.user.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-        // loading.dismiss()
-      }
-    }
+    } 
   }
 
   ionViewWillEnter() {
@@ -60,4 +53,5 @@ export class TabsPage {
   ionTabsWillChange() {
     alert('31 tabs')
   }
+
 }

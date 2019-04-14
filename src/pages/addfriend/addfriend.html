@@ -36,28 +36,32 @@
     </ion-item>
 
     <ion-list style="margin-top: 20px;" *ngIf="data_friend">
-
       <ion-item>
         <ion-avatar item-start>
           <img [src]="frieng_img">
         </ion-avatar>
         <ion-label>{{data_friend.name}}</ion-label>
         <ion-avatar item-end>
-          <button ion-button clear *ngIf="!checkFriend" (click)="onClickADD()">add</button>
-          <button ion-button clear *ngIf="checkFriend">ขอเป็นเพื่อนแล้ว</button>
+          <button ion-button outline *ngIf="checkFriend == false" (click)="onClickADD()">add</button>
+          <button ion-button outline *ngIf="checkFriend == true">ขอเป็นเพื่อนแล้ว</button>
         </ion-avatar>
       </ion-item>
-      <!-- <ion-item text-center>
-        <img [src]="frieng_img">
+    </ion-list>
+
+    <ion-list style="margin-top: 20px; background-color: white;" *ngIf="data_friend_request.length > 0">
+      <ion-list-header>
+        <ion-label>คำขอเป็นเพื่อน</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let data of data_friend_request">
+        <ion-avatar item-start>
+          <img [src]="data.photo">
+        </ion-avatar>
+        <ion-label>{{data.name}}</ion-label>
+        <ion-avatar item-end>
+          <!-- <button ion-button clear *ngIf="checkFriend == false" (click)="onClickADD()">add</button> -->
+          <button ion-button outline (click)="onClickRequestFriend(data)">ตอบรับคำขอ</button>
+        </ion-avatar>
       </ion-item>
-      <ion-item>
-        {{data_friend.name}}
-      </ion-item>
-      <ion-item>
-        <ion-buttons end>
-          <button ion-button (click)="onClickADD()">add</button>
-        </ion-buttons>
-      </ion-item> -->
     </ion-list>
   </ion-list>
 </ion-content>

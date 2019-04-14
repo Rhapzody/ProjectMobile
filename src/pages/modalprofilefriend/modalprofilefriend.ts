@@ -5,6 +5,7 @@ import { ChatPage } from '../chat/chat';
 import { TabsPage } from '../tabs/tabs';
 import { User } from '../../models/users';
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
+import { Room } from '../../models/rooms';
 
 /**
  * Generated class for the ModalprofilefriendPage page.
@@ -22,6 +23,7 @@ export class ModalprofilefriendPage {
 
   friend: User;
   user: User;
+  rooms: Room;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private chatService: ChatServiceProvider) {
   }
@@ -36,11 +38,13 @@ export class ModalprofilefriendPage {
 
   onClickOpenChat() {
     this.chatService.checkRoomChat(this.user.email, this.friend.email).then((room) => {
+      console.log(this.rooms);
+      
       if (room.data()) {
-        this.navCtrl.push(ChatPage, { friend: this.friend, user: this.user })
+        this.navCtrl.push(ChatPage, { room: this.rooms, user: this.user })
       } else {
         this.chatService.createRoomChat(this.user.email, this.friend.email).then((doc) => {
-          this.navCtrl.push(ChatPage, { friend: this.friend, user: this.user })
+          this.navCtrl.push(ChatPage, { room: this.rooms, user: this.user })
         })
       }
     })
@@ -56,5 +60,21 @@ export class ModalprofilefriendPage {
 
     this.friend = this.navParams.get('friend');
     this.user = this.navParams.get('user');
+    console.log(this.friend);
+    console.log(this.user);
+    let msgTemp = [];
+    this.chatService.getChat(this.user.email, this.friend.email).onSnapshot(chat => {
+      if (chat.docs.length > 0) {
+        chat.docChanges.forEach(data => {
+          msgTemp.push(data.doc.data())
+        })
+        this.rooms = {
+          friend: this.friend,
+          messages: msgTemp
+        }
+        console.log(this.rooms);
+      }
+    })
+
   }
 }
