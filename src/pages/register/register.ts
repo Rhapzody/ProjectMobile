@@ -22,6 +22,9 @@ export class RegisterPage {
   @ViewChild('password') _password;
   @ViewChild('tel') _tel;
 
+  valid_email: boolean = true;
+  // valid_tel: boolean = true;
+
   logoProfile: string = "assets/imgs/user.png";
 
 
@@ -52,77 +55,97 @@ export class RegisterPage {
           }).present()
         })
       } else {
-        this.registerService.checkEmailDuplicate(this.user.email).then(data => {
-          if (data.exists) {
+        if (this.valid_email) {
+          if (this._tel.value.length > 9) {
+            this.registerService.checkEmailDuplicate(this.user.email).then(data => {
+              if (data.exists) {
+                loading.dismiss().then(() => {
+                  this.altController.create({
+                    title: 'ERROR',
+                    subTitle: 'Email นี้มีในระบบแล้ว',
+                    buttons: ['OK']
+                  }).present();
+                })
+              } else {
+                if (!this.user.photo) {
+                  this.user.photo = "";
+                  this.registerService.createUser(this.user).then(() => {
+                    loading.dismiss().then(() => {
+                      this.altController.create({
+                        title: 'succes',
+                        subTitle: 'สมัครสมาชิกเรียบร้อย',
+                        buttons: [{
+                          text: 'OK',
+                          handler: () => {
+                            this.getUserByEmailAndPass(this.user.email, this.user.password)
+                          }
+                        }]
+                      }).present();
+                    })
+                  }).catch(() => {
+                    loading.dismiss().then(() => {
+                      this.altController.create({
+                        title: 'error',
+                        subTitle: 'db firestore.',
+                        buttons: ['OK']
+                      }).present();
+                    })
+                  })
+                } else {
+                  this.registerService.uploadImg(this.user).then(() => {
+                    this.user.photo = this._name.value;
+                    this.registerService.createUser(this.user).then(() => {
+                      loading.dismiss().then(() => {
+                        this.altController.create({
+                          title: 'succes',
+                          subTitle: 'สมัครสมาชิกเรียบร้อย',
+                          buttons: [{
+                            text: 'OK',
+                            handler: () => {
+                              this.getUserByEmailAndPass(this.user.email, this.user.password)
+                            }
+                          }]
+                        }).present();
+                      })
+                    }).catch(() => {
+                      loading.dismiss().then(() => {
+                        this.altController.create({
+                          title: 'error',
+                          subTitle: 'db firestore.',
+                          buttons: ['OK']
+                        }).present();
+                      })
+                    })
+                  }).catch(() => {
+                    loading.dismiss().then(() => {
+                      this.altController.create({
+                        title: 'error',
+                        subTitle: 'upload file',
+                        buttons: ['OK']
+                      }).present();
+                    })
+                  })
+                }
+              }
+            })
+          } else {
             loading.dismiss().then(() => {
               this.altController.create({
-                title: 'ERROR',
-                subTitle: 'Email นี้มีในระบบแล้ว',
+                title: 'คำเตือน',
+                subTitle: 'กรุณาใส่ เบอร์โทร ให้ครบ 10 ตัว',
                 buttons: ['OK']
               }).present();
             })
-          } else {
-            if (!this.user.photo) {
-              this.user.photo = "";
-              this.registerService.createUser(this.user).then(() => {
-                loading.dismiss().then(() => {
-                  this.altController.create({
-                    title: 'succes',
-                    subTitle: 'สมัครสมาชิกเรียบร้อย',
-                    buttons: [{
-                      text: 'OK',
-                      handler: () => {
-                        this.getUserByEmailAndPass(this.user.email, this.user.password)
-                      }
-                    }]
-                  }).present();
-                })
-              }).catch(() => {
-                loading.dismiss().then(() => {
-                  this.altController.create({
-                    title: 'error',
-                    subTitle: 'db firestore.',
-                    buttons: ['OK']
-                  }).present();
-                })
-              })
-            } else {
-              this.registerService.uploadImg(this.user).then(() => {
-                this.user.photo = this._name.value;
-                this.registerService.createUser(this.user).then(() => {
-                  loading.dismiss().then(() => {
-                    this.altController.create({
-                      title: 'succes',
-                      subTitle: 'สมัครสมาชิกเรียบร้อย',
-                      buttons: [{
-                        text: 'OK',
-                        handler: () => {
-                          this.getUserByEmailAndPass(this.user.email, this.user.password)
-                        }
-                      }]
-                    }).present();
-                  })
-                }).catch(() => {
-                  loading.dismiss().then(() => {
-                    this.altController.create({
-                      title: 'error',
-                      subTitle: 'db firestore.',
-                      buttons: ['OK']
-                    }).present();
-                  })
-                })
-              }).catch(() => {
-                loading.dismiss().then(() => {
-                  this.altController.create({
-                    title: 'error',
-                    subTitle: 'upload file',
-                    buttons: ['OK']
-                  }).present();
-                })
-              })
-            }
           }
-        })
+        } else {
+          loading.dismiss().then(() => {
+            this.altController.create({
+              title: 'คำเตือน',
+              subTitle: 'กรุณาใส่ email ให้ถูกต้อง',
+              buttons: ['OK']
+            }).present();
+          })
+        }
       }
     })
 
@@ -159,4 +182,29 @@ export class RegisterPage {
     })
 
   }
+
+  validateEmail() {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    this.valid_email = re.test(this._email.value);
+  }
+
+  validTel(e) {
+    console.log(e.target.value.length);
+
+    if ((e.keyCode < 48 || e.keyCode > 57)) {
+      e.preventDefault();
+    } 
+
+  }
+
+  validName(e) {
+    console.log(e.keyCode);
+
+    if ((e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 97 && e.keyCode <= 122) || (e.keyCode >= 3585 && e.keyCode <= 3680)) {
+
+    } else {
+      e.preventDefault();
+    }
+  }
+
 }

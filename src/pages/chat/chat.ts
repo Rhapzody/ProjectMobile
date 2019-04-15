@@ -19,7 +19,7 @@ export class ChatPage {
   // chatName: string;
   room: Room;
   user: User;
-  input: string;
+  input: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController, private chatService: ChatServiceProvider) {
 
@@ -44,21 +44,24 @@ export class ChatPage {
   doSend() {
     let date = Date.now();
     let input = this.input;
-    this.chatService.createChat(this.user.email, this.room.friend.email, date, input).then(() => {
-      this.chatService.checkRoomChat(this.room.friend.email, this.user.email).then(doc => {
-        if (doc.exists) {
-          this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, input).then(() => {
-
-          })
-        } else {
-          this.chatService.createRoomChat(this.room.friend.email, this.user.email).then(() => {
+    if (input != '') {
+      this.chatService.createChat(this.user.email, this.room.friend.email, date, input).then(() => {
+        this.chatService.checkRoomChat(this.room.friend.email, this.user.email).then(doc => {
+          if (doc.exists) {
             this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, input).then(() => {
 
             })
-          })
-        }
+          } else {
+            this.chatService.createRoomChat(this.room.friend.email, this.user.email).then(() => {
+              this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, input).then(() => {
+
+              })
+            })
+          }
+        })
+        this.content.scrollToBottom();
       })
-    })
-    this.input = '';
+      this.input = '';
+    }
   }
 }

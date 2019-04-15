@@ -28,16 +28,18 @@
 
   <form>
     <ion-label>{{ 'Username' }}</ion-label>
-    <ion-input type="text" #name></ion-input>
-
+    <ion-input type="text" #name (keypress)="validName($event);"></ion-input>
+    
     <ion-label float>{{ 'Email'  }}</ion-label>
-    <ion-input type="email" #email></ion-input>
+    <ion-input type="email" #email (keypress)="validateEmail()"></ion-input>
+    <ion-label color="danger" [hidden]="valid_email">โปรดใส่ email ในรูปแบบ example@gmail.com</ion-label>
 
     <ion-label float>{{ 'Password' }}</ion-label>
     <ion-input type="password" #password></ion-input>
 
     <ion-label float>{{ 'Tel' }}</ion-label>
-    <ion-input type="text" #tel></ion-input>
+    <ion-input type="tel" #tel minlength="10" maxlength="10" (keypress)="validTel($event);"></ion-input>
+    <!-- <ion-label color="danger" [hidden]="valid_tel">โปรดใส่ให้ครบ 10 ตัว</ion-label> -->
 
     <div padding text-center>
       <button ion-button round color="light" icon-right (click)="createUser();">
