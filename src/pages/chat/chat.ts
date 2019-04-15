@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, Content, List } from 'ionic-angular';
 import { User } from '../../models/users';
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 import { Room } from '../../models/rooms';
@@ -10,6 +10,8 @@ import { Room } from '../../models/rooms';
   templateUrl: 'chat.html',
 })
 export class ChatPage {
+
+  @ViewChild(Content) content: Content;
 
   msg: string = "hellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohello";
   arr = [1, 2, 3];
@@ -24,10 +26,6 @@ export class ChatPage {
   }
 
   ionViewDidLoad() {
-
-  }
-
-  ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     })
@@ -35,16 +33,13 @@ export class ChatPage {
     loading.present().then(() => {
       this.room = this.navParams.get("room");
       this.user = this.navParams.get("user");
-      console.log(this.room);
-
       loading.dismiss();
     })
   }
 
-  scrollToBottom() {
-
+  ionViewDidEnter() {
+    this.content.scrollToBottom();
   }
-
 
   doSend() {
     let date = Date.now();
@@ -53,12 +48,12 @@ export class ChatPage {
       this.chatService.checkRoomChat(this.room.friend.email, this.user.email).then(doc => {
         if (doc.exists) {
           this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, input).then(() => {
-            
+
           })
         } else {
           this.chatService.createRoomChat(this.room.friend.email, this.user.email).then(() => {
             this.chatService.createChatFriend(this.user.email, this.room.friend.email, date, input).then(() => {
-             
+
             })
           })
         }

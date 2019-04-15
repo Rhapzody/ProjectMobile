@@ -8,6 +8,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
 import { Storage } from '@ionic/storage';
 import { User } from '../../models/users';
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'page-about',

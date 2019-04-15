@@ -4,6 +4,7 @@ import { User } from '../../models/users';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
 import { Storage } from '@ionic/storage';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'page-contact',
