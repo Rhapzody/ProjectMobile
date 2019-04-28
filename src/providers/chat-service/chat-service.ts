@@ -40,7 +40,7 @@ export class ChatServiceProvider {
     })
   }
 
-  createChatFriend(email, email_friend, date, input){
+  createChatFriend(email, email_friend, date, input) {
     return this.db.collection('rooms').doc(email_friend + '_' + email).collection('messages').add({
       sender: email,
       type: 'text',
@@ -49,8 +49,14 @@ export class ChatServiceProvider {
     })
   }
 
-  getChat(email, email_friend){
+  getChat(email, email_friend) {
     return firebase.firestore().collection('rooms').doc(email + '_' + email_friend).collection('messages').orderBy("date")
+  }
+
+  deleteMsg(email, email_friend, message) {
+    return firebase.firestore().collection('rooms').doc(email + '_' + email_friend).collection('messages').where('sender', '==', message.sender).where('type', '==', message.type).where('date', '==', message.date).where('content', '==', message.content).get().then(doc => {
+      firebase.firestore().collection('rooms/' + email + '_' + email_friend + '/messages').doc(doc.docs[0].id).delete()
+    })
   }
 
 }

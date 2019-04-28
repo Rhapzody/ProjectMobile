@@ -69,6 +69,8 @@ export class AboutPage {
     loading.present().then(() => {
       this.user = usertemp;
       this.chatService.getRoomChat(this.user.email).onSnapshot(async data => {
+        console.log('72 about');
+        
         let roomtemp = [];
         await data.forEach((room) => {
           this.userService.checkEmailUser(room.data().user2).then(user2 => {
@@ -78,9 +80,15 @@ export class AboutPage {
                 dataTemp.photo = url;
                 let msgTemp = [];
                 this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
+                  console.log('83 about');
+                  console.log(chat.docChanges);
+                  
                   if (chat.docs.length > 0) {
                     chat.docChanges.forEach(data => {
-                      msgTemp.push(data.doc.data())
+                      console.log(data);
+                      if(data.newIndex != -1){
+                        msgTemp.push(data.doc.data())
+                      }
                     })
                   }
                 })
@@ -91,9 +99,13 @@ export class AboutPage {
               dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
               let msgTemp = [];
               this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
+                console.log('98 about');
+                
                 if (chat.docs.length > 0) {
                   chat.docChanges.forEach(data => {
-                    msgTemp.push(data.doc.data())
+                    if(data.newIndex != -1){
+                      msgTemp.push(data.doc.data())
+                    }
                   })
                 }
               })

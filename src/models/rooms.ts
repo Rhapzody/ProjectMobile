@@ -10,5 +10,5 @@ export class Messages {
     content: string;
     type: string;
     sender: string;
-    date: Date;
+    date: number;
 }

@@ -11,14 +11,14 @@
 
   <div #scrollMe class="message-wrap" *ngIf="room">
 
-    <div *ngFor="let message of room.messages">
+    <div *ngFor="let message of room.messages; let i = index;">
       <div class="sender" *ngIf="message.sender == room.friend.email">
         <ion-grid>
           <ion-row>
             <ion-col col-2 text-left>
               <img class="friend-img" [src]="room.friend.photo" alt="">
             </ion-col>
-            <ion-col col-10>
+            <ion-col col-10 (press)="deleteMsg(i)">
               <p>{{message.content}}</p>
             </ion-col>
           </ion-row>
@@ -28,7 +28,7 @@
       <div class="me" *ngIf="message.sender == user.email">
         <ion-grid>
           <ion-row>
-            <ion-col col-10>
+            <ion-col col-10 (press)="deleteMsg(i)">
               <p>{{message.content}}</p>
             </ion-col>
             <ion-col col-2>
