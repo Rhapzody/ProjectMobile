@@ -111,7 +111,10 @@ export class HomePage {
                   dataTemp.photo = url;
                   friendTemp.push(dataTemp);
                   if (i + 1 == this.user.friends.length) {
+                    friendTemp.sort((a, b) => (a.email > b.email)? 1:(a.email < b.email)? -1:0)
                     this.friends = friendTemp;
+                    console.log(this.friends);
+                    
                     loading.dismiss()
                   }
                 })
@@ -119,7 +122,9 @@ export class HomePage {
                 dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
                 friendTemp.push(dataTemp);
                 if (i + 1 == this.user.friends.length) {
+                  friendTemp.sort((a, b) => (a.email > b.email)? 1:(a.email < b.email)? -1:0)
                   this.friends = friendTemp;
+                  console.log(friendTemp);
                   loading.dismiss()
                 }
               }
@@ -131,12 +136,5 @@ export class HomePage {
       })
     })
   }
-
-  signout() {
-    console.log('135');
-    this.storage.remove('authChat');
-    this.app.getRootNav().setRoot(LoginPage)
-  }
-
 
 }

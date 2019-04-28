@@ -32,32 +32,35 @@ export class AddfriendPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddfriendPage');
-    // this.user = this.navParams.get('user')
+    this.user = this.navParams.get('user')
+    console.log(this.user);
+
     this.userService.userCurrent.subscribe(user => {
       this.user = user
       console.log(this.user);
-      this.data_friend_request = []
-      this.request = []
-      this.userService.getRequestFriend(this.user.email).get().then((docReq) => {
-        console.log(docReq.size);
+    })
 
-        docReq.forEach((req) => {
-          console.log(req.data());
-          this.request.push(req.data())
-          this.userService.checkEmailUser(req.data().user_req).then(docUserReq => {
-            let dataTemp = docUserReq.docs[0].data();
-            if (dataTemp.photo != '') {
-              this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
-                dataTemp.photo = url;
-                this.data_friend_request.push(dataTemp)
+    this.data_friend_request = []
+    this.request = []
+    this.userService.getRequestFriend(this.user.email).get().then((docReq) => {
+      console.log(docReq.size);
 
-              })
-            } else {
-              dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
+      docReq.forEach((req) => {
+        console.log(req.data());
+        this.request.push(req.data())
+        this.userService.checkEmailUser(req.data().user_req).then(docUserReq => {
+          let dataTemp = docUserReq.docs[0].data();
+          if (dataTemp.photo != '') {
+            this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
+              dataTemp.photo = url;
               this.data_friend_request.push(dataTemp)
 
-            }
-          })
+            })
+          } else {
+            dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
+            this.data_friend_request.push(dataTemp)
+
+          }
         })
       })
     })
@@ -189,17 +192,19 @@ export class AddfriendPage {
     })
   }
 
-  onClickRequestFriend(data) {
+  onClickRequestFriend(data, i) {
     console.log(data);
+    console.log(i);
+    
     this.userService.addFriend(this.user.email, data.email, 0, this.user).then(() => {
-      this.altCon.create({
-        title: 'add request success.',
-        buttons: [
-          {
-            text: 'OK'
-          }
-        ]
-      }).present()
+      // this.altCon.create({
+      //   title: 'add request success.',
+      //   buttons: [
+      //     {
+      //       text: 'OK'
+      //     }
+      //   ]
+      // }).present()
     }, err => {
       this.altCon.create({
         title: err,
@@ -210,5 +215,7 @@ export class AddfriendPage {
         ]
       }).present()
     })
+
+    this.data_friend_request.splice(i, 1);
   }
 }
