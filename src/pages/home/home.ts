@@ -137,4 +137,10 @@ export class HomePage {
     })
   }
 
+  signout() {
+    console.log('135');
+    this.storage.remove('authChat');
+    this.app.getRootNav().setRoot(LoginPage)
+  }
+
 }

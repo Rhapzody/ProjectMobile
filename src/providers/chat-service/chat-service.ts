@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { async } from '@firebase/util';
 
 /*
   Generated class for the ChatServiceProvider provider.
@@ -56,6 +57,20 @@ export class ChatServiceProvider {
   deleteMsg(email, email_friend, message) {
     return firebase.firestore().collection('rooms').doc(email + '_' + email_friend).collection('messages').where('sender', '==', message.sender).where('type', '==', message.type).where('date', '==', message.date).where('content', '==', message.content).get().then(doc => {
       firebase.firestore().collection('rooms/' + email + '_' + email_friend + '/messages').doc(doc.docs[0].id).delete()
+    })
+  }
+
+  deleteRoomChat(email, email_friend) {
+    return firebase.firestore().collection('rooms').doc(email + '_' + email_friend).collection('messages').get().then(async (docs) => {
+      await docs.forEach(doc => {
+        firebase.firestore().collection('rooms/' + email + '_' + email_friend + '/messages').doc(doc.id).delete().then(() => {
+
+        })
+      })
+
+      firebase.firestore().collection('rooms').doc(email + '_' + email_friend).delete().then(() => {
+        
+      })
     })
   }
 

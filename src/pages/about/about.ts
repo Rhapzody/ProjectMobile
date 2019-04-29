@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, App } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, App, ActionSheetController } from 'ionic-angular';
 import { ChatPage } from '../chat/chat';
 
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
@@ -20,7 +20,7 @@ export class AboutPage {
   rooms: Array<Room>
 
   constructor(public navCtrl: NavController, private param: NavParams, private chatService: ChatServiceProvider, private userService: UserServiceProvider,
-    private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private storage: Storage, public app: App) {
+    private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private storage: Storage, public app: App, public actionSheetCtrl: ActionSheetController) {
 
   }
 
@@ -70,7 +70,7 @@ export class AboutPage {
       this.user = usertemp;
       this.chatService.getRoomChat(this.user.email).onSnapshot(async data => {
         console.log('72 about');
-        
+        // console.log(data.docChanges);
         let roomtemp = [];
         await data.forEach((room) => {
           this.userService.checkEmailUser(room.data().user2).then(user2 => {
@@ -81,12 +81,12 @@ export class AboutPage {
                 let msgTemp = [];
                 this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
                   console.log('83 about');
-                  console.log(chat.docChanges);
-                  
+                  // console.log(chat.docChanges);
+
                   if (chat.docs.length > 0) {
                     chat.docChanges.forEach(data => {
-                      console.log(data);
-                      if(data.newIndex != -1){
+                      // console.log(data);
+                      if (data.newIndex != -1) {
                         msgTemp.push(data.doc.data())
                       }
                     })
@@ -100,10 +100,10 @@ export class AboutPage {
               let msgTemp = [];
               this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
                 console.log('98 about');
-                
+
                 if (chat.docs.length > 0) {
                   chat.docChanges.forEach(data => {
-                    if(data.newIndex != -1){
+                    if (data.newIndex != -1) {
                       msgTemp.push(data.doc.data())
                     }
                   })
@@ -123,6 +123,30 @@ export class AboutPage {
     console.log('135');
     this.storage.remove('authChat');
     this.app.getRootNav().setRoot(LoginPage)
+  }
+
+  deleteRoomChat(i) {
+    console.log(i);
+    console.log(this.rooms[i]);
+    
+    this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: 'ลบ',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+            this.chatService.deleteRoomChat(this.user.email, this.rooms[i].friend.email).then(() => {
+              console.log('delete success.');
+              // this.rooms.splice(i, 1)
+            })
+          }
+        }, {
+          text: 'ยกเลิก',
+          role: 'cancel'
+        }
+      ]
+    }).present();
   }
 
 }

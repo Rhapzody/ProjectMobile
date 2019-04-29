@@ -38,7 +38,10 @@ export class ChatPage {
   }
 
   ionViewDidEnter() {
-    this.content.scrollToBottom();
+    // this.content.scrollToBottom();
+    this.chatService.getChat(this.user.email, this.room.friend.email).onSnapshot(() => {
+      this.content.scrollToBottom();
+    })
   }
 
   doSend() {
@@ -59,7 +62,7 @@ export class ChatPage {
             })
           }
         })
-        this.content.scrollToBottom();
+        // this.content.scrollToBottom();
       })
       this.input = '';
     }
