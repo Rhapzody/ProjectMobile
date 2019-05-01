@@ -2,33 +2,36 @@
   <ion-navbar color="blue">
     <ion-title>
       <ion-icon name="list-box"></ion-icon>
-       Chat
+      Chat
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-<ion-list >
-  <ion-item *ngFor="let room of rooms; let i = index;" (click)="onClickOpenChat(room)" (press)="deleteRoomChat(i);">
-    <ion-avatar item-left>
-      <img src="{{room.friend.photo}}">
-    </ion-avatar>
-    <ion-grid>
-      <ion-row>
-        <ion-col >
-          {{room.friend.name}}
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col *ngIf="room.messages">
-          <p *ngIf="room.messages.length > 0">{{room.messages[room.messages.length-1].content}}</p>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-item>
-</ion-list>
+  <ion-list>
+    <ion-item *ngFor="let room of rooms; let i = index;" (click)="onClickOpenChat(room)" (press)="deleteRoomChat(i);">
+      <ion-avatar item-left>
+        <img src="{{room.friend.photo}}">
+      </ion-avatar>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            {{room.friend.name}}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="room.messages">
+          <ion-col>
+            <p *ngIf="room.messages.length > 0">{{room.messages[room.messages.length-1].content}}</p>
+          </ion-col>
+          <ion-badge item-end *ngIf="readCount[i] > 0">{{readCount[i]}}</ion-badge>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
 
-<ion-fab right bottom>
-  <button ion-fab color="dark" (click)="signout();"><ion-icon name="log-out"></ion-icon></button>
-</ion-fab>
+  <ion-fab right bottom>
+    <button ion-fab color="dark" (click)="signout();">
+      <ion-icon name="log-out"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

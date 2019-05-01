@@ -24,12 +24,19 @@ export class ChatServiceProvider {
   createRoomChat(email, email_friend) {
     return this.db.collection('rooms').doc(email + '_' + email_friend).set({
       user1: email,
-      user2: email_friend
+      user2: email_friend,
+      time: Date.now()
     })
   }
 
   getRoomChat(email) {
-    return firebase.firestore().collection('rooms').where('user1', '==', email)
+    return firebase.firestore().collection('rooms').where('user1', '==', email).orderBy('time', 'desc')
+  }
+
+  updateRoomChat(email, email_friend, date) {
+    return this.db.collection('rooms').doc(email + '_' + email_friend).update({
+      time: date
+    })
   }
 
   createChat(email, email_friend, date, input) {
@@ -37,7 +44,10 @@ export class ChatServiceProvider {
       sender: email,
       type: 'text',
       date: date,
-      content: input
+      content: input,
+      status: 0
+    }).then(() => {
+      this.updateRoomChat(email, email_friend, date)
     })
   }
 
@@ -46,7 +56,14 @@ export class ChatServiceProvider {
       sender: email,
       type: 'text',
       date: date,
-      content: input
+      content: input,
+      status: 0
+    })
+  }
+
+  updateStatusChat(email, email_friend, id) {
+    return this.db.collection('rooms').doc(email + '_' + email_friend).collection('messages').doc(id).update({
+      status: 1
     })
   }
 

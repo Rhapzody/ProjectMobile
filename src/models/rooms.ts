@@ -11,4 +11,5 @@ export class Messages {
     type: string;
     sender: string;
     date: number;
+    status: number;
 }

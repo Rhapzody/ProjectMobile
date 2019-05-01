@@ -5,6 +5,8 @@ import { User } from '../../models/users';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { TabsPage } from '../tabs/tabs';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
+import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
+import { Storage } from '@ionic/storage';
 
 
 @IonicPage()
@@ -29,7 +31,9 @@ export class RegisterPage {
 
 
   constructor(public navCtrl: NavController,
-    public navParams: NavParams, private registerService: RegisterServiceProvider, private camera: Camera, private altController: AlertController, private loginService: LoginServiceProvider, public loadingCtrl: LoadingController) {
+    public navParams: NavParams, private registerService: RegisterServiceProvider, private camera: Camera, 
+    private altController: AlertController, private loginService: LoginServiceProvider, public loadingCtrl: LoadingController,
+    private firebaseSto: FirebaseStorageProvider, private storage: Storage) {
   }
 
   ionViewDidLoad() {
@@ -55,6 +59,8 @@ export class RegisterPage {
           }).present()
         })
       } else {
+        console.log(this.valid_email);
+
         if (this.valid_email) {
           if (this._tel.value.length > 9) {
             this.registerService.checkEmailDuplicate(this.user.email).then(data => {
@@ -92,7 +98,9 @@ export class RegisterPage {
                     })
                   })
                 } else {
-                  this.registerService.uploadImg(this.user).then(() => {
+                  this.registerService.uploadImg(this.user).then((ref) => {
+                    console.log(ref);
+
                     this.user.photo = this._name.value;
                     this.registerService.createUser(this.user).then(() => {
                       loading.dismiss().then(() => {
@@ -173,8 +181,22 @@ export class RegisterPage {
     this.loginService.checkEmailAndPassword(email, password).get().then(user => {
 
       if (!user.empty) {
-        user.forEach(data => {
-          this.navCtrl.push(TabsPage, { "user": data.data() });
+        let usertemp: any;
+        user.forEach(async data => {
+          usertemp = data.data();
+          if (usertemp.photo != '') {
+            let url = await this.firebaseSto.getURLImg(usertemp.email, usertemp.photo)
+            usertemp.photo = url;
+            // loading.dismiss()
+          } else {
+            usertemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
+            // loading.dismiss()
+
+          }
+          this.storage.set('authChat', usertemp.email)
+
+          this.navCtrl.push(TabsPage, { "user": usertemp });
+
         })
       } else {
         alert('email or password invalid.')
@@ -184,21 +206,27 @@ export class RegisterPage {
   }
 
   validateEmail() {
+    console.log('191');
+
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.valid_email = re.test(this._email.value);
   }
 
   validTel(e) {
-    console.log(e.target.value.length);
+    console.log(e);
 
+    // let regExp = /[0-9]/;
+    // if(e.target.value.length != 0)
+    // if(!regExp.test(e.target.value)){
+    //   e.preventDefault();
+    // }
     if ((e.keyCode < 48 || e.keyCode > 57)) {
       e.preventDefault();
-    } 
+    }
 
   }
 
   validName(e) {
-    console.log(e.keyCode);
 
     if ((e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 97 && e.keyCode <= 122) || (e.keyCode >= 3585 && e.keyCode <= 3680)) {
 

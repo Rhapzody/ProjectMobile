@@ -52,6 +52,7 @@ export class UserServiceProvider {
 
   // เพิ่ม friend ใน user
   updateFriendsUser(email, friendsTemp) {
+    friendsTemp.sort((a, b) => (a.email > b.email)? 1:(a.email < b.email)? -1:0)
     return this.db.collection('users').doc(email).update(
       {
         friends: friendsTemp

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, App, ToastController } from 'ionic-angular';
 import { AboutPage } from '../about/about';
 import { ChatPage } from '../chat/chat';
 import { TabsPage } from '../tabs/tabs';
@@ -24,12 +24,21 @@ export class ModalprofilefriendPage {
   friend: User;
   user: User;
   rooms: Room;
+  get_chat: any;
+  checkLoad: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private chatService: ChatServiceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private chatService: ChatServiceProvider, public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ModalprofilefriendPage');
+    console.log(this.navParams.get('user'));
+
+    this.friend = this.navParams.get('friend');
+    this.user = this.navParams.get('user');
+    console.log(this.friend);
+    console.log(this.user);
+    this.getChat();
   }
 
   dismiss() {
@@ -37,9 +46,10 @@ export class ModalprofilefriendPage {
   }
 
   onClickOpenChat() {
+    this.checkLoad = true;
     this.chatService.checkRoomChat(this.user.email, this.friend.email).then((room) => {
       console.log(this.rooms);
-      
+
       if (room.data()) {
         this.navCtrl.push(ChatPage, { room: this.rooms, user: this.user })
       } else {
@@ -56,25 +66,47 @@ export class ModalprofilefriendPage {
   }
 
   ionViewWillEnter() {
-    console.log(this.navParams.get('user'));
 
-    this.friend = this.navParams.get('friend');
-    this.user = this.navParams.get('user');
-    console.log(this.friend);
-    console.log(this.user);
+  }
+
+  getChat() {
     let msgTemp = [];
-    this.chatService.getChat(this.user.email, this.friend.email).onSnapshot(chat => {
+    this.getChat = this.chatService.getChat(this.user.email, this.friend.email).onSnapshot(chat => {
       if (chat.docs.length > 0) {
         chat.docChanges.forEach(data => {
-          msgTemp.push(data.doc.data())
+
+          if (data.newIndex != -1 && data.type != 'modified') {
+            msgTemp.push(data.doc.data())
+          }
+
+          if (data.doc.data().sender == this.friend.email && this.checkLoad) {
+            this.presentToast();
+          }
         })
         this.rooms = {
           friend: this.friend,
           messages: msgTemp
         }
-        console.log(this.rooms);
+      } else {
+        this.rooms = {
+          friend: this.friend,
+          messages: []
+        }
       }
     })
+  }
 
+  ionViewWillUnload() {
+    console.log('93');
+
+    this.getChat();
+  }
+
+  presentToast() {
+    const toast = this.toastCtrl.create({
+      message: 'User was added successfully',
+      duration: 3000
+    });
+    toast.present();
   }
 }

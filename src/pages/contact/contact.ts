@@ -52,6 +52,8 @@ export class ContactPage {
   }
 
   loadData(usertemp) {
+    console.log(usertemp);
+    
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
     })

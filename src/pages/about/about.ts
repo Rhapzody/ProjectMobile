@@ -19,6 +19,8 @@ export class AboutPage {
   user: User;
   rooms: Array<Room>
 
+  readCount: Array<number> = [];
+
   constructor(public navCtrl: NavController, private param: NavParams, private chatService: ChatServiceProvider, private userService: UserServiceProvider,
     private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private storage: Storage, public app: App, public actionSheetCtrl: ActionSheetController) {
 
@@ -61,7 +63,7 @@ export class AboutPage {
     this.navCtrl.push(ChatPage, { room: room, user: this.user })
   }
 
-  loadData(usertemp) {
+  loadData = (usertemp) => {
     let loading = this.loadingCtrl.create({
       content: "Please wait..."
     })
@@ -72,13 +74,14 @@ export class AboutPage {
         console.log('72 about');
         // console.log(data.docChanges);
         let roomtemp = [];
-        await data.forEach((room) => {
+        await data.docs.forEach((room, i) => {
           this.userService.checkEmailUser(room.data().user2).then(user2 => {
             let dataTemp = user2.docs[0].data()
             if (dataTemp.photo != '') {
               this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
                 dataTemp.photo = url;
                 let msgTemp = [];
+                let readTemp = 0;
                 this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
                   console.log('83 about');
                   // console.log(chat.docChanges);
@@ -86,31 +89,55 @@ export class AboutPage {
                   if (chat.docs.length > 0) {
                     chat.docChanges.forEach(data => {
                       // console.log(data);
-                      if (data.newIndex != -1) {
+                      if (data.newIndex != -1 && data.type != 'modified') {
                         msgTemp.push(data.doc.data())
+                        if (data.doc.data().status == 0) readTemp += 1;
+                      } else if (data.type == 'modified') {
+                        readTemp = 0;
+
+                        console.log(i);
+
                       }
                     })
+                    this.readCount[i] = readTemp
+                    console.log(this.readCount);
                   }
                 })
                 roomtemp.push({ friend: dataTemp, messages: msgTemp });
                 this.rooms = roomtemp;
+                console.log(this.rooms);
               })
             } else {
               dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
               let msgTemp = [];
+              let readTemp = 0;
               this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
                 console.log('98 about');
 
                 if (chat.docs.length > 0) {
-                  chat.docChanges.forEach(data => {
-                    if (data.newIndex != -1) {
+                  chat.docChanges.forEach((data) => {
+                    console.log(data);
+                    if (data.newIndex != -1 && data.type != 'modified') {
                       msgTemp.push(data.doc.data())
+                      if (data.doc.data().status == 0) readTemp += 1;
+                    } else if (data.type == 'modified') {
+                      readTemp = 0;
+
+                      console.log(i);
+
                     }
+
                   })
+                  this.readCount[i] = readTemp
+                  console.log(this.readCount);
                 }
               })
+
               roomtemp.push({ friend: dataTemp, messages: msgTemp });
               this.rooms = roomtemp;
+              console.log(this.rooms);
+
+
             }
           })
         })
@@ -128,7 +155,7 @@ export class AboutPage {
   deleteRoomChat(i) {
     console.log(i);
     console.log(this.rooms[i]);
-    
+
     this.actionSheetCtrl.create({
       buttons: [
         {
