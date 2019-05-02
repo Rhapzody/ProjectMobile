@@ -90,4 +90,11 @@ export class UserServiceProvider {
     }
   }
 
+  updateProfile(user: User) {
+    return this.db.collection('users').doc(user.email).update({
+      name: user.name,
+      tel: user.tel
+    })
+  }
+
 }

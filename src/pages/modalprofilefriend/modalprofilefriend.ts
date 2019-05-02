@@ -79,9 +79,9 @@ export class ModalprofilefriendPage {
             msgTemp.push(data.doc.data())
           }
 
-          if (data.doc.data().sender == this.friend.email && this.checkLoad) {
-            this.presentToast();
-          }
+          // if (data.doc.data().sender == this.friend.email && this.checkLoad) {
+          //   this.presentToast();
+          // }
         })
         this.rooms = {
           friend: this.friend,
@@ -102,7 +102,7 @@ export class ModalprofilefriendPage {
     this.getChat();
   }
 
-  presentToast() {
+  // presentToast() {
     const toast = this.toastCtrl.create({
       message: 'User was added successfully',
       duration: 3000
