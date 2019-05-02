@@ -90,7 +90,7 @@ export class ModalprofilefriendPage {
       } else {
         this.rooms = {
           friend: this.friend,
-          messages: []
+          messages: msgTemp
         }
       }
     })
@@ -103,10 +103,10 @@ export class ModalprofilefriendPage {
   }
 
   // presentToast() {
-    const toast = this.toastCtrl.create({
-      message: 'User was added successfully',
-      duration: 3000
-    });
-    toast.present();
-  }
+  //   const toast = this.toastCtrl.create({
+  //     message: 'User was added successfully',
+  //     duration: 3000
+  //   });
+  //   toast.present();
+  // }
 }

@@ -32,6 +32,7 @@ export class AboutPage {
 
   ionViewDidLoad() {
     console.log(this.param.data);
+    // this.loadData(this.param.data)
     if (this.param.data.email) {
       this.loadData(this.param.data)
     } else {
@@ -60,6 +61,8 @@ export class AboutPage {
   }
 
   onClickOpenChat(room) {
+    console.log(room);
+    
     this.navCtrl.push(ChatPage, { room: room, user: this.user })
   }
 
@@ -69,7 +72,18 @@ export class AboutPage {
     })
 
     loading.present().then(() => {
+      console.log(usertemp);
+      
       this.user = usertemp;
+      // this.rooms = usertemp.rooms;
+      // this.readCount = usertemp.readCount;
+      // console.log(this.user);
+      // console.log(this.rooms);
+      // console.log(this.readCount);
+      
+      
+      
+      // loading.dismiss();
       this.chatService.getRoomChat(this.user.email).onSnapshot(async data => {
         console.log('72 about');
         // console.log(data.docChanges);
@@ -122,9 +136,9 @@ export class AboutPage {
                       if (data.doc.data().status == 0) readTemp += 1;
                     } else if (data.type == 'modified') {
                       readTemp = 0;
-
                       console.log(i);
-
+                    } else if (data.type == 'removed') {
+                      this.readCount.splice(i, 1);
                     }
 
                   })

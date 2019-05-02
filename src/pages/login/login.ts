@@ -54,7 +54,7 @@ export class LoginPage {
           }
           this.storage.set('authChat', usertemp.email)
 
-          this.navCtrl.push(TabsPage, { "user": usertemp });
+          this.navCtrl.setRoot(TabsPage, { "user": usertemp });
 
         })
       } else {
