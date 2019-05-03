@@ -32,7 +32,7 @@ export class ChatPage {
 
   ionViewWillEnter() {
 
-    // this.backgroundMode.disable()
+    this.backgroundMode.disable()
 
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'

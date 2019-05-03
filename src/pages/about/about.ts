@@ -89,6 +89,7 @@ export class AboutPage {
         // console.log(data.docChanges);
         let roomtemp = [];
         await data.docs.forEach((room, i) => {
+          
           this.userService.checkEmailUser(room.data().user2).then(user2 => {
             let dataTemp = user2.docs[0].data()
             if (dataTemp.photo != '') {

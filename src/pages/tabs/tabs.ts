@@ -103,52 +103,52 @@ export class TabsPage {
 
   checkData(email) {
     this.backgroundMode.on('enable').subscribe(() => {
-      this.chatService.getRoomChat(email).onSnapshot(docRoom => {
-        console.log('105');
-        console.log(this.navCtrl.getActive().name);
+    this.chatService.getRoomChat(email).onSnapshot(docRoom => {
+      console.log('105');
+      console.log(this.navCtrl.getActive().name);
 
-        docRoom.docChanges.forEach((room, i) => {
-          console.log(i);
-          console.log(room);
+      docRoom.docChanges.forEach((room, i) => {
+        console.log(i);
+        console.log(room);
 
-          // if (room.type != 'modified' && room.type != 'removed') {
-          console.log(room.doc.data());
-          let r = room.doc.data();
-          this.chatService.getChat(email, r.user2).get().then((chatDoc) => {
+        // if (room.type != 'modified' && room.type != 'removed') {
+        console.log(room.doc.data());
+        let r = room.doc.data();
+        this.chatService.getChat(email, r.user2).get().then((chatDoc) => {
 
-            if (chatDoc.size > 0) {
-              console.log(chatDoc.docChanges);
+          if (chatDoc.size > 0) {
+            console.log(chatDoc.docChanges);
 
-              console.log(chatDoc.docChanges[chatDoc.size - 1].type);
-              if (!this.check) {
-                // this.localNotifications.schedule({
-                //   title: 'My first Noti',
-                //   text: 'Single ILocalNotification',
-                //   foreground: true
-                // });
-                if (room.type == 'added' || chatDoc.docChanges[chatDoc.size - 1].type == 'added') {
-                  // console.log('Noti');
-                  // alert('Noti')
-                  // console.log(this.check);
-                  // alert(this.check)
+            console.log(chatDoc.docChanges[chatDoc.size - 1].type);
+            if (!this.check) {
+              // this.localNotifications.schedule({
+              //   title: 'My first Noti',
+              //   text: 'Single ILocalNotification',
+              //   foreground: true
+              // });
+
+              if (chatDoc.docChanges[chatDoc.size - 1].type == 'added' || room.type == 'added') {
+                if (chatDoc.docChanges[chatDoc.size - 1].doc.data().sender != email) {
                   this.localNotifications.schedule({
-                    title: 'My first Noti',
-                    text: 'Single ILocalNotification',
+                    title: r.user2,
+                    text: chatDoc.docChanges[chatDoc.size - 1].doc.data().content,
                     foreground: true
                   });
                 }
 
               }
 
-              if (i + 1 == docRoom.size) {
-                this.check = false;
-              }
             }
 
-          })
-          // }
+            if (i + 1 == docRoom.size) {
+              this.check = false;
+            }
+          }
+
         })
+        // }
       })
+    })
     })
 
     this.backgroundMode.enable();
