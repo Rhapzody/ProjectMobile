@@ -130,16 +130,14 @@ export class AboutPage {
 
                 if (chat.docs.length > 0) {
                   chat.docChanges.forEach((data) => {
-                    console.log(data);
+                    // console.log(data);
                     if (data.newIndex != -1 && data.type != 'modified') {
                       msgTemp.push(data.doc.data())
                       if (data.doc.data().status == 0) readTemp += 1;
                     } else if (data.type == 'modified') {
                       readTemp = 0;
                       console.log(i);
-                    } else if (data.type == 'removed') {
-                      this.readCount.splice(i, 1);
-                    }
+                    } 
 
                   })
                   this.readCount[i] = readTemp

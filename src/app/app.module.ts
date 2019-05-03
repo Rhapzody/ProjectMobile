@@ -36,6 +36,8 @@ import { AddfriendPage } from '../pages/addfriend/addfriend';
 import { ChatServiceProvider } from '../providers/chat-service/chat-service';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 @NgModule({
   declarations: [
@@ -89,6 +91,8 @@ import { IonicStorageModule } from '@ionic/storage';
     Camera,
     FirebaseStorageProvider,
     ChatServiceProvider,
+    LocalNotifications,
+    BackgroundMode
   ]
 })
 export class AppModule { }

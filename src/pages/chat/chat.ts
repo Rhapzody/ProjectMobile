@@ -99,6 +99,7 @@ export class ChatPage {
       buttons: [
         {
           text: 'ลบ',
+          role: 'destructive',
           handler: () => {
             console.log('Archive clicked');
             this.chatService.deleteMsg(this.user.email, this.room.friend.email, this.room.messages[i]).then(() => {

@@ -6,12 +6,10 @@ import { HomePage } from '../home/home';
 import { User } from '../../models/users';
 import { NavParams, LoadingController } from 'ionic-angular';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
-import { LoginServiceProvider } from '../../providers/login-service/login-service';
-import { async } from '@firebase/util';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { Storage } from '@ionic/storage';
-import { Room } from '../../models/rooms';
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -24,41 +22,43 @@ export class TabsPage {
   tab2Root = AboutPage;
   tab3Root = ContactPage;
 
-  rooms: Array<any> = []
-
-  readCount: Array<number> = [];
-
   user: User = new User();
 
-  constructor(private param: NavParams, private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private chatService: ChatServiceProvider, private userService: UserServiceProvider, private storage: Storage) {
+  check: boolean = true;
+
+  constructor(private param: NavParams, private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private chatService: ChatServiceProvider,
+    private userService: UserServiceProvider, private storage: Storage, private localNotifications: LocalNotifications) {
     if (this.param.get('user')) {
       this.user = this.param.get('user')
-      // this.loadData()
-    } 
-    // else {
-    //   this.storage.get('authChat').then((value) => {
-    //     if (value) {
-    //       this.userService.checkEmailUser(value).then((docUser) => {
-    //         if (!docUser.empty) {
-    //           docUser.forEach(async data => {
-    //             let usertemp = <User>data.data();
-    //             if (usertemp.photo != '') {
-    //               let url = await this.firebaseSto.getURLImg(usertemp.email, usertemp.photo)
-    //               usertemp.photo = url;
-    //               // loading.dismiss()
-    //             } else {
-    //               usertemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-    //               // loading.dismiss()
+      this.loadData()
+    }
+    else {
+      // this.storage.get('authChat').then((value) => {
+      //   if (value) {
+      //     this.userService.checkEmailUser(value).then((docUser) => {
+      //       if (!docUser.empty) {
+      //         docUser.forEach(async data => {
+      //           this.user = <User>data.data()
+      //             let usertemp = <User>data.data();
+      //             if (usertemp.photo != '') {
+      //               let url = await this.firebaseSto.getURLImg(usertemp.email, usertemp.photo)
+      //               usertemp.photo = url;
+      //               // loading.dismiss()
+      //             } else {
+      //               usertemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
+      //               // loading.dismiss()
 
-    //             }
-    //             this.user = usertemp
-    //             this.loadData()
-    //           })
-    //         }
-    //       })
-    //     }
-    //   })
-    // }
+      //             }
+      //             this.user = usertemp
+      this.loadData()
+      //         })
+      //       }
+      //     })
+      //   }
+      // })
+    }
+
+
   }
 
   ionViewWillEnter() {
@@ -85,89 +85,49 @@ export class TabsPage {
     alert('31 tabs')
   }
 
-  // loadData() {
-  //   let loading = this.loadingCtrl.create({
-  //     content: "Please wait..."
-  //   })
+  loadData() {
+    console.log(this.user);
+    if (this.user.email) {
+      this.checkData(this.user.email)
+    } else {
+      this.storage.get('authChat').then((value) => {
+        if (value) {
+          console.log(value);
+          this.checkData(value)
+        }
+      })
+    }
 
-  //   loading.present().then(() => {
-  //     // this.user = usertemp;
-  //     this.chatService.getRoomChat(this.user.email).onSnapshot(async data => {
-  //       console.log('72 about');
-  //       // console.log(data.docChanges);
-  //       let roomtemp = [];
-  //       await data.docs.forEach((room, i) => {
-  //         this.readCount[i] = 0;
-  //         this.userService.checkEmailUser(room.data().user2).then(user2 => {
-  //           let dataTemp = user2.docs[0].data()
-  //           if (dataTemp.photo != '') {
-  //             this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
-  //               dataTemp.photo = url;
-  //               let msgTemp = [];
-  //               let readTemp = 0;
-  //               this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
-  //                 console.log('83 about');
-  //                 // console.log(chat.docChanges);
+  }
 
-  //                 if (chat.docs.length > 0) {
-  //                   chat.docChanges.forEach(data => {
-  //                     // console.log(data);
-  //                     if (data.newIndex != -1 && data.type != 'modified') {
-  //                       msgTemp.push(data.doc.data())
-  //                       if (data.doc.data().status == 0) readTemp += 1;
-  //                     } else if (data.type == 'modified') {
-  //                       readTemp = 0;
+  checkData(email) {
+    this.chatService.getRoomChat(email).onSnapshot(docRoom => {
+      docRoom.docChanges.forEach((room, i) => {
+        if (room.type != 'modified' && room.type != 'removed') {
+          console.log(room.doc.data());
+          let r = room.doc.data();
+          this.chatService.getChat(email, r.user2).get().then((chatDoc) => {
+            if (!this.check) {
+              // this.localNotifications.schedule({
+              //   title: 'My first Noti',
+              //   text: 'Single ILocalNotification',
+              //   foreground: true
+              // });
+              console.log('Noti');
+              alert('Noti')
+              console.log(this.check);
+              alert(this.check)
+              
+            }
 
-  //                       console.log(i);
+            if(i + 1 == docRoom.size) {
+              this.check = false;
+            }
 
-  //                     }
-  //                   })
-  //                   this.readCount[i] = readTemp
-  //                   // console.log(this.readCount);
-  //                 }
-  //               })
-  //               // roomtemp.push({ friend: dataTemp, messages: msgTemp });
-  //               // this.rooms = roomtemp;
-  //               this.rooms[i] = { friend: dataTemp, messages: msgTemp }
-  //               // console.log(this.rooms);
-  //             })
-  //           } else {
-  //             dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-  //             let msgTemp = [];
-  //             let readTemp = 0;
-  //             this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
-  //               console.log('98 about');
-
-  //               if (chat.docs.length > 0) {
-  //                 chat.docChanges.forEach((data) => {
-  //                   // console.log(data);
-  //                   if (data.newIndex != -1 && data.type != 'modified') {
-  //                     msgTemp.push(data.doc.data())
-  //                     if (data.doc.data().status == 0) this.readCount[i] += 1;
-  //                   } else if (data.type == 'modified') {
-  //                     this.readCount[i] = 0;
-
-  //                     console.log(i);
-
-  //                   }
-
-  //                 })
-  //                 // this.readCount[i] = readTemp
-  //                 // console.log(this.readCount);
-  //               }
-  //             })
-
-  //             // roomtemp.push({ friend: dataTemp, messages: msgTemp });
-  //             this.rooms[i] = { friend: dataTemp, messages: msgTemp };
-  //             // console.log(this.rooms);
-
-
-  //           }
-  //         })
-  //       })
-  //       loading.dismiss()
-  //     })
-  //   })
-  // }
+          })
+        }
+      })
+    })
+  }
 
 }
