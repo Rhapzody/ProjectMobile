@@ -61,7 +61,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
     AngularFirestoreModule,
     AngularFireStorageModule,
     HttpClientModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [

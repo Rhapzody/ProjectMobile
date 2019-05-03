@@ -54,9 +54,11 @@
     "firebase": "4.12.1",
     "ionic-angular": "3.9.3",
     "ionicons": "3.0.0",
+    "q": "^1.5.1",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.29"
+    "zone.js": "0.8.29",
+    "cordova-android-support-gradle-release": "^3.0.0"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.2.1",
@@ -82,7 +84,10 @@
       "cordova-plugin-camera": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-background-mode": {}
+      "cordova-plugin-background-mode": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      }
     },
     "platforms": [
       "android"

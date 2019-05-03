@@ -4,12 +4,13 @@ import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
 import { HomePage } from '../home/home';
 import { User } from '../../models/users';
-import { NavParams, LoadingController } from 'ionic-angular';
+import { NavParams, LoadingController, NavController } from 'ionic-angular';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { Storage } from '@ionic/storage';
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -27,7 +28,7 @@ export class TabsPage {
   check: boolean = true;
 
   constructor(private param: NavParams, private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private chatService: ChatServiceProvider,
-    private userService: UserServiceProvider, private storage: Storage, private localNotifications: LocalNotifications) {
+    private userService: UserServiceProvider, private storage: Storage, private localNotifications: LocalNotifications, public navCtrl: NavController, private backgroundMode: BackgroundMode) {
     if (this.param.get('user')) {
       this.user = this.param.get('user')
       this.loadData()
@@ -101,33 +102,56 @@ export class TabsPage {
   }
 
   checkData(email) {
-    this.chatService.getRoomChat(email).onSnapshot(docRoom => {
-      docRoom.docChanges.forEach((room, i) => {
-        if (room.type != 'modified' && room.type != 'removed') {
+    this.backgroundMode.on('enable').subscribe(() => {
+      this.chatService.getRoomChat(email).onSnapshot(docRoom => {
+        console.log('105');
+        console.log(this.navCtrl.getActive().name);
+
+        docRoom.docChanges.forEach((room, i) => {
+          console.log(i);
+          console.log(room);
+
+          // if (room.type != 'modified' && room.type != 'removed') {
           console.log(room.doc.data());
           let r = room.doc.data();
           this.chatService.getChat(email, r.user2).get().then((chatDoc) => {
-            if (!this.check) {
-              // this.localNotifications.schedule({
-              //   title: 'My first Noti',
-              //   text: 'Single ILocalNotification',
-              //   foreground: true
-              // });
-              console.log('Noti');
-              alert('Noti')
-              console.log(this.check);
-              alert(this.check)
-              
-            }
 
-            if(i + 1 == docRoom.size) {
-              this.check = false;
+            if (chatDoc.size > 0) {
+              console.log(chatDoc.docChanges);
+
+              console.log(chatDoc.docChanges[chatDoc.size - 1].type);
+              if (!this.check) {
+                // this.localNotifications.schedule({
+                //   title: 'My first Noti',
+                //   text: 'Single ILocalNotification',
+                //   foreground: true
+                // });
+                if (room.type == 'added' || chatDoc.docChanges[chatDoc.size - 1].type == 'added') {
+                  // console.log('Noti');
+                  // alert('Noti')
+                  // console.log(this.check);
+                  // alert(this.check)
+                  this.localNotifications.schedule({
+                    title: 'My first Noti',
+                    text: 'Single ILocalNotification',
+                    foreground: true
+                  });
+                }
+
+              }
+
+              if (i + 1 == docRoom.size) {
+                this.check = false;
+              }
             }
 
           })
-        }
+          // }
+        })
       })
     })
+
+    this.backgroundMode.enable();
   }
 
 }

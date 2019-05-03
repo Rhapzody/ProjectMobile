@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, Content, Action
 import { User } from '../../models/users';
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 import { Room } from '../../models/rooms';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 @IonicPage()
 @Component({
@@ -25,11 +26,13 @@ export class ChatPage {
 
   test;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController, private chatService: ChatServiceProvider, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController, private chatService: ChatServiceProvider, public actionSheetCtrl: ActionSheetController, private backgroundMode: BackgroundMode) {
 
   }
 
   ionViewWillEnter() {
+
+    // this.backgroundMode.disable()
 
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -62,6 +65,7 @@ export class ChatPage {
   ionViewDidLeave() {
     console.log('61');
     this.test();
+    this.backgroundMode.enable();
   }
 
   doSend() {
