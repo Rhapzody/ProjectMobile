@@ -1,7 +1,7 @@
-
 <ion-header>
   <ion-navbar color="blue">
-    <ion-title><ion-icon ios="ios-paper" md="md-paper"></ion-icon>
+    <ion-title>
+      <ion-icon ios="ios-paper" md="md-paper"></ion-icon>
       <span *ngIf="friend">
         {{friend.name}}'s Profile
       </span>
@@ -12,14 +12,74 @@
 <ion-content padding>
   <ion-list *ngIf="friend">
     <ion-item>
-      <img src="{{friend.photo}}"
-        alt="picture">
+      <img src="{{friend.photo}}" alt="picture">
     </ion-item>
 
-    <div style="margin-top: 40px; text-align: center;">
+
+    <ion-item>
+      <ion-row>
+        <ion-col text-center>
+          <button ion-button round (click)="onClickOpenChat()">
+            <ion-icon name="chatboxes"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col text-center>
+          <button ion-button round color="secondary" (click)="call();">
+            <ion-icon name="call"></ion-icon>
+          </button>
+        </ion-col>
+        <!-- </ion-item> -->
+
+      </ion-row>
+
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="mail" item-start></ion-icon>
+      <h1>{{friend.email}}</h1>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="ios-contact" item-start></ion-icon>
+      <h1>{{friend.name}}</h1>
+    </ion-item>
+
+    <ion-item>
+
+      <ion-icon name="call" item-start></ion-icon>
+      <h1>{{friend.tel}}</h1>
+    </ion-item>
+
+    <!-- <div style="margin-top: 40px; text-align: center;">
       <button ion-button icon-only (click)="onClickOpenChat()">
         <ion-icon name="chatboxes"></ion-icon>
       </button>
-    </div>
+    </div> -->
   </ion-list>
+
+  <!-- <ion-list *ngIf="friend">
+    <ion-item>
+      <ion-icon name="ios-contact" item-start></ion-icon>
+      <h2>{{friend.name}}</h2>
+    </ion-item>
+
+    <ion-item>
+
+      <ion-icon name="call" item-start></ion-icon>
+      <h2>{{friend.tel}}</h2>
+    </ion-item>
+  </ion-list> -->
+
+
+  <!-- <ion-fab style="bottom: 10%; left: 15%">
+    <button ion-fab (click)="onClickOpenChat()">
+      <ion-icon name="chatboxes"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <ion-fab style="bottom: 10%; right: 15%">
+    <button ion-fab color="secondary" (click)="call();">
+      <ion-icon name="call"></ion-icon>
+    </button>
+  </ion-fab> -->
 </ion-content>

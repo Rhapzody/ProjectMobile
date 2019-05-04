@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
 import { HomePage } from '../home/home';
 import { User } from '../../models/users';
-import { NavParams, LoadingController, NavController } from 'ionic-angular';
+import { NavParams, LoadingController, NavController, App, Tabs } from 'ionic-angular';
 import { FirebaseStorageProvider } from '../../providers/firebase-storage/firebase-storage';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { Storage } from '@ionic/storage';
@@ -17,6 +17,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 })
 export class TabsPage {
 
+  @ViewChild('sTabs') sTabs: Tabs;
   selectedIndex = 0;
 
   tab1Root = HomePage;
@@ -28,7 +29,8 @@ export class TabsPage {
   check: boolean = true;
 
   constructor(private param: NavParams, private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private chatService: ChatServiceProvider,
-    private userService: UserServiceProvider, private storage: Storage, private localNotifications: LocalNotifications, public navCtrl: NavController, private backgroundMode: BackgroundMode) {
+    private userService: UserServiceProvider, private storage: Storage, private localNotifications: LocalNotifications, public navCtrl: NavController, private backgroundMode: BackgroundMode,
+    private app: App) {
     if (this.param.get('user')) {
       this.user = this.param.get('user')
       this.loadData()
@@ -102,10 +104,15 @@ export class TabsPage {
   }
 
   checkData(email) {
-    this.backgroundMode.on('enable').subscribe(() => {
+
+    // this.backgroundMode.on('enable').subscribe(() => {
     this.chatService.getRoomChat(email).onSnapshot(docRoom => {
       console.log('105');
       console.log(this.navCtrl.getActive().name);
+      let currentPage = this.app.getActiveNav().getViews();
+      console.log(this.app.getActiveNavs('ChatPage'));
+      
+      // console.log('current page is: ', currentPage[currentPage.length - 1].data.room.friend.email);
 
       docRoom.docChanges.forEach((room, i) => {
         console.log(i);
@@ -128,12 +135,44 @@ export class TabsPage {
               // });
 
               if (chatDoc.docChanges[chatDoc.size - 1].type == 'added' || room.type == 'added') {
-                if (chatDoc.docChanges[chatDoc.size - 1].doc.data().sender != email) {
+                if (currentPage[currentPage.length - 1].name != 'ChatPage') {
+                  // if (currentPage[currentPage.length - 1].data.room.friend.email != r.user2)
+                  console.log('137');
+
                   this.localNotifications.schedule({
                     title: r.user2,
                     text: chatDoc.docChanges[chatDoc.size - 1].doc.data().content,
                     foreground: true
                   });
+
+                  let observable = this.localNotifications.on('click').subscribe((notification) => {
+                    alert('noti work 143 tab')
+                    this.sTabs.select(1);
+                    
+                    observable.unsubscribe();
+                  })
+
+                  // this.localNotifications
+                }
+                else {
+                  if (currentPage[currentPage.length - 1].data.room.friend.email != r.user2) {
+                    console.log('155');
+
+                    this.localNotifications.schedule({
+                      title: r.user2,
+                      text: chatDoc.docChanges[chatDoc.size - 1].doc.data().content,
+                      foreground: true
+                    });
+
+                    let observable = this.localNotifications.on('click').subscribe((notification) => {
+                      alert('noti work 143 tab')
+                      this.selectedIndex = 1;
+                      this.sTabs.select(1);
+                      observable.unsubscribe();
+                    })
+                  }
+                  console.log('167');
+
                 }
 
               }
@@ -149,9 +188,9 @@ export class TabsPage {
         // }
       })
     })
-    })
+    // })
 
-    this.backgroundMode.enable();
+    // this.backgroundMode.enable();
   }
 
 }

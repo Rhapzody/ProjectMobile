@@ -1,4 +1,4 @@
-<ion-tabs [selectedIndex]="selectedIndex" color="blue" >
+<ion-tabs [selectedIndex]="selectedIndex" color="blue" #sTabs>
   <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home" [rootParams]="user" tabsHideOnSubPages="true"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="Chat" tabIcon="chatboxes" [rootParams]="user" tabsHideOnSubPages="true"></ion-tab>
   <ion-tab [root]="tab3Root" tabTitle="Profile" tabIcon="person" [rootParams]="user"></ion-tab>

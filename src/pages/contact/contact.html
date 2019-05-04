@@ -28,13 +28,21 @@
         <ion-input type="text" value="{{user.email}}"></ion-input>
       </ion-item> -->
       <ion-item>
-        <ion-label fixed>Name</ion-label>
-        <ion-input type="text" value="{{user.name}}" readonly></ion-input>
+        <ion-icon name="mail" item-start></ion-icon>
+        <h1>{{user.email}}</h1>
       </ion-item>
+
       <ion-item>
-        <ion-label fixed>Tel</ion-label>
-        <ion-input type="text" value="{{user.tel}}" readonly></ion-input>
+        <ion-icon name="ios-contact" item-start></ion-icon>
+        <h1>{{user.name}}</h1>
       </ion-item>
+
+      <ion-item>
+
+        <ion-icon name="call" item-start></ion-icon>
+        <h1>{{user.tel}}</h1>
+      </ion-item>
+
     </ion-list>
 
     <!-- <div>

@@ -109,4 +109,8 @@ export class ModalprofilefriendPage {
   //   });
   //   toast.present();
   // }
+
+  call() {
+    window.location.href = 'tel:' + this.friend.tel;
+  }
 }

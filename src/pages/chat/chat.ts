@@ -32,7 +32,7 @@ export class ChatPage {
 
   ionViewWillEnter() {
 
-    this.backgroundMode.disable()
+    // this.backgroundMode.disable()
 
     let loading = this.loadingCtrl.create({
       content: 'Please wait...'
@@ -65,7 +65,7 @@ export class ChatPage {
   ionViewDidLeave() {
     console.log('61');
     this.test();
-    this.backgroundMode.enable();
+    // this.backgroundMode.enable();
   }
 
   doSend() {

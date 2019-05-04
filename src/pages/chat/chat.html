@@ -9,7 +9,7 @@
 
 <ion-content padding #content>
 
-  <div #scrollMe class="message-wrap" *ngIf="room">
+  <div #scrollMe class="message-wrap" *ngIf="room" >
 
     <div *ngFor="let message of room.messages; let i = index;">
       <div class="sender" *ngIf="message.sender == room.friend.email">
@@ -28,7 +28,7 @@
       <div class="me" *ngIf="message.sender == user.email">
         <ion-grid>
           <ion-row>
-            <ion-col col-10 (press)="deleteMsg(i)">
+            <ion-col col-10 (press)="deleteMsg(i)" color="char">
               <p>{{message.content}}</p>
             </ion-col>
             <ion-col col-2>
@@ -43,7 +43,7 @@
 </ion-content>
 
 <ion-footer no-border>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="blue">
     <ion-textarea (keyup.enter)="doSend()" [(ngModel)]="input" placeholder="Enter your message" name="message">
     </ion-textarea>
     <ion-buttons end>
