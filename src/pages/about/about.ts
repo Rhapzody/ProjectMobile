@@ -18,6 +18,7 @@ export class AboutPage {
 
   user: User;
   rooms: Array<Room>
+  roomsTemp: Array<Room>
 
   readCount: Array<number> = [];
 
@@ -62,7 +63,7 @@ export class AboutPage {
 
   onClickOpenChat(room) {
     console.log(room);
-    
+
     this.navCtrl.push(ChatPage, { room: room, user: this.user })
   }
 
@@ -73,23 +74,23 @@ export class AboutPage {
 
     loading.present().then(() => {
       console.log(usertemp);
-      
+
       this.user = usertemp;
       // this.rooms = usertemp.rooms;
       // this.readCount = usertemp.readCount;
       // console.log(this.user);
       // console.log(this.rooms);
       // console.log(this.readCount);
-      
-      
-      
+
+
+
       // loading.dismiss();
       this.chatService.getRoomChat(this.user.email).onSnapshot(async data => {
         console.log('72 about');
         // console.log(data.docChanges);
         let roomtemp = [];
         await data.docs.forEach((room, i) => {
-          
+
           this.userService.checkEmailUser(room.data().user2).then(user2 => {
             let dataTemp = user2.docs[0].data()
             if (dataTemp.photo != '') {
@@ -105,7 +106,11 @@ export class AboutPage {
                     chat.docChanges.forEach(data => {
                       // console.log(data);
                       if (data.newIndex != -1 && data.type != 'modified') {
-                        msgTemp.push(data.doc.data())
+                        let dataTemp = data.doc.data()
+                        let d = new Date(data.doc.data().date)
+                        // console.log(d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
+                        dataTemp.date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+                        msgTemp.push(dataTemp)
                         if (data.doc.data().status == 0) readTemp += 1;
                       } else if (data.type == 'modified') {
                         readTemp = 0;
@@ -120,7 +125,8 @@ export class AboutPage {
                 })
                 roomtemp.push({ friend: dataTemp, messages: msgTemp });
                 this.rooms = roomtemp;
-                console.log(this.rooms);
+                this.roomsTemp = roomtemp;
+                console.log(this.roomsTemp);
               })
             } else {
               dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
@@ -133,12 +139,16 @@ export class AboutPage {
                   chat.docChanges.forEach((data) => {
                     // console.log(data);
                     if (data.newIndex != -1 && data.type != 'modified') {
-                      msgTemp.push(data.doc.data())
+                      let dataTemp = data.doc.data()
+                      let d = new Date(data.doc.data().date)
+                      // console.log(d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
+                      dataTemp.date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+                      msgTemp.push(dataTemp)
                       if (data.doc.data().status == 0) readTemp += 1;
                     } else if (data.type == 'modified') {
                       readTemp = 0;
                       console.log(i);
-                    } 
+                    }
 
                   })
                   this.readCount[i] = readTemp
@@ -148,6 +158,7 @@ export class AboutPage {
 
               roomtemp.push({ friend: dataTemp, messages: msgTemp });
               this.rooms = roomtemp;
+              this.roomsTemp = roomtemp
               console.log(this.rooms);
 
 
@@ -187,6 +198,22 @@ export class AboutPage {
         }
       ]
     }).present();
+  }
+
+  search(ev: any) {
+    const val = ev.target.value;
+
+    console.log(this.rooms);
+    console.log(this.roomsTemp);
+
+
+    this.rooms = this.roomsTemp
+
+    if (val && val.trim() != '') {
+      this.rooms = this.rooms.filter((item) => {
+        return (item.friend.email.toLowerCase().indexOf(val.toLowerCase()) > -1) || (item.friend.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
 }

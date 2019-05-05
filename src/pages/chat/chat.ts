@@ -71,7 +71,7 @@ export class ChatPage {
   doSend() {
     let date = Date.now();
     let input = this.input;
-    if (input != '') {
+    if (input != '' && input.trim() != '') {
       this.chatService.createChat(this.user.email, this.room.friend.email, date, input).then(() => {
         this.chatService.checkRoomChat(this.room.friend.email, this.user.email).then(doc => {
           if (doc.exists) {
@@ -91,6 +91,8 @@ export class ChatPage {
           }
         })
       })
+      this.input = '';
+    } else {
       this.input = '';
     }
   }

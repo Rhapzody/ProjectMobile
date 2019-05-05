@@ -5,6 +5,9 @@
       Chat
     </ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
@@ -18,12 +21,13 @@
           <ion-col>
             {{room.friend.name}}
           </ion-col>
+          <ion-badge item-end *ngIf="room.messages.length > 0">{{room.messages[room.messages.length-1].date}}</ion-badge>
         </ion-row>
         <ion-row *ngIf="room.messages">
           <ion-col>
             <p *ngIf="room.messages.length > 0">{{room.messages[room.messages.length-1].content}}</p>
           </ion-col>
-          <ion-badge item-end *ngIf="readCount[i] > 0">{{readCount[i]}}</ion-badge>
+          <ion-badge item-end *ngIf="readCount[i] > 0" color="danger">{{readCount[i]}}</ion-badge>
         </ion-row>
       </ion-grid>
     </ion-item>

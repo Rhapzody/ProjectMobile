@@ -17,6 +17,7 @@ export class HomePage {
 
   user: User;
   friends: Array<User>;
+  friendsTemp: Array<User>;
 
   constructor(public navCtrl: NavController, private db: AngularFirestore, private modalCtrl: ModalController, private param: NavParams, private userService: UserServiceProvider,
     private firebaseSto: FirebaseStorageProvider, public loadingCtrl: LoadingController, private storage: Storage, public app: App) {
@@ -111,10 +112,11 @@ export class HomePage {
                   dataTemp.photo = url;
                   friendTemp.push(dataTemp);
                   if (i + 1 == this.user.friends.length) {
-                    friendTemp.sort((a, b) => (a.email > b.email)? 1:(a.email < b.email)? -1:0)
+                    friendTemp.sort((a, b) => (a.email > b.email) ? 1 : (a.email < b.email) ? -1 : 0)
                     this.friends = friendTemp;
+                    this.friendsTemp = friendTemp
                     console.log(this.friends);
-                    
+
                     loading.dismiss()
                   }
                 })
@@ -122,8 +124,9 @@ export class HomePage {
                 dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
                 friendTemp.push(dataTemp);
                 if (i + 1 == this.user.friends.length) {
-                  friendTemp.sort((a, b) => (a.email > b.email)? 1:(a.email < b.email)? -1:0)
+                  friendTemp.sort((a, b) => (a.email > b.email) ? 1 : (a.email < b.email) ? -1 : 0)
                   this.friends = friendTemp;
+                  this.friendsTemp = friendTemp;
                   console.log(friendTemp);
                   loading.dismiss()
                 }
@@ -141,6 +144,16 @@ export class HomePage {
     console.log('135');
     this.storage.remove('authChat');
     this.app.getRootNav().setRoot(LoginPage)
+  }
+
+  search(ev: any) {
+    const val = ev.target.value;
+    this.friends = this.friendsTemp
+    if (val && val.trim() != '') {
+      this.friends = this.friends.filter((item) => {
+        return (item.email.toLowerCase().indexOf(val.toLowerCase()) > -1) || (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
   }
 
 }

@@ -1,14 +1,24 @@
 <ion-header>
+
   <ion-navbar color="blue">
+
     <ion-buttons end>
-      <button ion-button end (click)="presentModal()"><ion-icon name="person-add" style="font-size: 200%;"></ion-icon></button>
+      <button ion-button end (click)="presentModal()">
+        <ion-icon name="person-add" style="font-size: 200%;"></ion-icon>
+      </button>
     </ion-buttons>
-    <ion-title><ion-icon ios="ios-home" md="md-home"></ion-icon> Home</ion-title>
+    <ion-title>
+      <ion-icon ios="ios-home" md="md-home"></ion-icon> Home
+    </ion-title>
+
   </ion-navbar>
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+  <!-- <ion-searchbar (ionInput)="search($event)"></ion-searchbar> -->
   <ion-list>
     <ion-item-sliding #sliding *ngFor="let friend of friends;">
       <ion-item>
@@ -31,7 +41,9 @@
   </ion-list>
 
   <ion-fab right bottom>
-    <button ion-fab color="dark" (click)="signout();"><ion-icon name="log-out"></ion-icon></button>
+    <button ion-fab color="dark" (click)="signout();">
+      <ion-icon name="log-out"></ion-icon>
+    </button>
   </ion-fab>
 
 </ion-content>
