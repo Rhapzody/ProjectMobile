@@ -50,17 +50,17 @@ export class AddfriendPage {
         this.request.push(req.data())
         this.userService.checkEmailUser(req.data().user_req).then(docUserReq => {
           let dataTemp = docUserReq.docs[0].data();
-          if (dataTemp.photo != '') {
-            this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
-              dataTemp.photo = url;
-              this.data_friend_request.push(dataTemp)
+          // if (dataTemp.photo != '') {
+          //   this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
+          //     dataTemp.photo = url;
+          this.data_friend_request.push(dataTemp)
 
-            })
-          } else {
-            dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-            this.data_friend_request.push(dataTemp)
+          //   })
+          // } else {
+          //   dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
+          //   this.data_friend_request.push(dataTemp)
 
-          }
+          // }
         })
       })
     })
@@ -104,37 +104,37 @@ export class AddfriendPage {
             }).present()
           } else {
             this.data_friend = data.docs[0].data()
-            if (this.data_friend.photo == '') {
-              this.frieng_img = "https://png.pngtree.com/svg/20170827/people_106508.png";
-              if (this.user.friends.length > 0) {
-                let findEmail = this.user.friends.find(this.findEmail)
+            // if (this.data_friend.photo == '') {
+            //   this.frieng_img = "https://png.pngtree.com/svg/20170827/people_106508.png";
+            if (this.user.friends.length > 0) {
+              let findEmail = this.user.friends.find(this.findEmail)
 
-                if (findEmail) {
-                  this.checkFriend = true;
-                } else {
-                  this.checkFriend = false;
-                }
+              if (findEmail) {
+                this.checkFriend = true;
               } else {
                 this.checkFriend = false;
-
               }
             } else {
-              this.firebaseSto.getURLImg(this.data_friend.email, this.data_friend.photo).then(url => {
-                console.log(url);
-                this.frieng_img = url;
-                if (this.user.friends.length > 0) {
-                  let findEmail = this.user.friends.find(this.findEmail)
-                  if (findEmail) {
-                    this.checkFriend = true;
-                  } else {
-                    this.checkFriend = false;
-                  }
-                } else {
-                  this.checkFriend = false;
+              this.checkFriend = false;
 
-                }
-              })
             }
+            // } else {
+            //   this.firebaseSto.getURLImg(this.data_friend.email, this.data_friend.photo).then(url => {
+            //     console.log(url);
+            //     this.frieng_img = url;
+            // if (this.user.friends.length > 0) {
+            //   let findEmail = this.user.friends.find(this.findEmail)
+            //   if (findEmail) {
+            //     this.checkFriend = true;
+            //   } else {
+            //     this.checkFriend = false;
+            //   }
+            // } else {
+            //   this.checkFriend = false;
+
+            // }
+            //   })
+            // }
           }
         } else {
           this.altCon.create({
@@ -195,7 +195,7 @@ export class AddfriendPage {
   onClickRequestFriend(data, i) {
     console.log(data);
     console.log(i);
-    
+
     this.userService.addFriend(this.user.email, data.email, 0, this.user).then(() => {
       // this.altCon.create({
       //   title: 'add request success.',

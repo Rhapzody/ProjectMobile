@@ -50,7 +50,7 @@ export class RegisterPage {
       this.user.name = this._name.value
       this.user.password = this._password.value
       this.user.tel = this._tel.value
-      if (this.user.email == '' || this.user.name == '' || this.user.password == '' || this.user.tel == '') {
+      if (this.user.email == '' || this.user.name == '' || this.user.password == '' || this.user.tel == '' || this.user.email.trim() == '' || this.user.name.trim() == '' || this.user.password.trim() == '' || this.user.tel.trim() == '') {
         loading.dismiss().then(() => {
           this.altController.create({
             title: 'คำเตือน',
@@ -75,7 +75,7 @@ export class RegisterPage {
               } else {
                 if (!this.user.photo) {
                   this.user.photo = "";
-                  this.registerService.createUser(this.user).then(() => {
+                  this.registerService.createUser(this.user, 'https://png.pngtree.com/svg/20170827/people_106508.png').then(() => {
                     loading.dismiss().then(() => {
                       this.altController.create({
                         title: 'succes',
@@ -99,10 +99,10 @@ export class RegisterPage {
                   })
                 } else {
                   this.registerService.uploadImg(this.user).then((ref) => {
-                    console.log(ref);
+                    console.log(ref.downloadURL);
 
                     this.user.photo = this._name.value;
-                    this.registerService.createUser(this.user).then(() => {
+                    this.registerService.createUser(this.user, ref.downloadURL).then(() => {
                       loading.dismiss().then(() => {
                         this.altController.create({
                           title: 'succes',

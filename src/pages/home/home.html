@@ -23,7 +23,7 @@
     <ion-item-sliding #sliding *ngFor="let friend of friends;">
       <ion-item>
         <ion-avatar item-start>
-          <img [src]="friend.photo">
+          <img [src]="friend.path_photo">
         </ion-avatar>
         <h2>{{friend.name}} <span ion-text color="primary">({{friend.email}})</span></h2>
       </ion-item>

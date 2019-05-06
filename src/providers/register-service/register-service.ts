@@ -18,7 +18,7 @@ export class RegisterServiceProvider {
     console.log('Hello RegisterServiceProvider Provider');
   }
 
-  createUser(user: User) {
+  createUser(user: User, url) {
     console.log(user);
 
     return this.db.collection('users', ref => ref.where('email', '==', user.email)).doc(user.email).set({
@@ -28,7 +28,8 @@ export class RegisterServiceProvider {
       photo: user.photo,
       registime: firebase.firestore.FieldValue.serverTimestamp(),
       friends: new Array(),
-      tel: user.tel
+      tel: user.tel,
+      path_photo: url
     })
     // .then(data => {
     //   console.log(data);

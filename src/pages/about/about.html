@@ -14,14 +14,14 @@
   <ion-list>
     <ion-item *ngFor="let room of rooms; let i = index;" (click)="onClickOpenChat(room)" (press)="deleteRoomChat(i);">
       <ion-avatar item-left>
-        <img src="{{room.friend.photo}}">
+        <img src="{{room.friend.path_photo}}">
       </ion-avatar>
       <ion-grid>
         <ion-row>
           <ion-col>
             {{room.friend.name}}
           </ion-col>
-          <ion-badge item-end *ngIf="room.messages.length > 0">{{room.messages[room.messages.length-1].date}}</ion-badge>
+          <ion-badge item-end *ngIf="room.messages.length > 0">{{room.messages[room.messages.length-1].dateTxt}}</ion-badge>
         </ion-row>
         <ion-row *ngIf="room.messages">
           <ion-col>

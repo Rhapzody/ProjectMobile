@@ -30,7 +30,6 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    console.log('didload 28 home');
 
     if (this.param.data.email) {
       this.loadData(this.param.data);
@@ -41,15 +40,15 @@ export class HomePage {
             if (!docUser.empty) {
               docUser.forEach(async data => {
                 let usertemp = <User>data.data();
-                if (usertemp.photo != '') {
-                  let url = await this.firebaseSto.getURLImg(usertemp.email, usertemp.photo)
-                  usertemp.photo = url;
-                  // loading.dismiss()
-                } else {
-                  usertemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-                  // loading.dismiss()
+                // if (usertemp.photo != '') {
+                //   let url = await this.firebaseSto.getURLImg(usertemp.email, usertemp.photo)
+                //   usertemp.photo = url;
+                //   // loading.dismiss()
+                // } else {
+                //   usertemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
+                //   // loading.dismiss()
 
-                }
+                // }
                 this.loadData(usertemp)
               })
             }
@@ -107,30 +106,30 @@ export class HomePage {
           this.user.friends.forEach((friend, i) => {
             this.userService.checkEmailUser(friend.email).then(doc => {
               let dataTemp = doc.docs[0].data()
-              if (dataTemp.photo != '') {
-                this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
-                  dataTemp.photo = url;
-                  friendTemp.push(dataTemp);
-                  if (i + 1 == this.user.friends.length) {
-                    friendTemp.sort((a, b) => (a.email > b.email) ? 1 : (a.email < b.email) ? -1 : 0)
-                    this.friends = friendTemp;
-                    this.friendsTemp = friendTemp
-                    console.log(this.friends);
+              // if (dataTemp.photo != '') {
+              //   this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
+              //     dataTemp.photo = url;
+              friendTemp.push(dataTemp);
+              if (i + 1 == this.user.friends.length) {
+                friendTemp.sort((a, b) => (a.email > b.email) ? 1 : (a.email < b.email) ? -1 : 0)
+                this.friends = friendTemp;
+                this.friendsTemp = friendTemp
+                console.log(this.friends);
 
-                    loading.dismiss()
-                  }
-                })
-              } else {
-                dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-                friendTemp.push(dataTemp);
-                if (i + 1 == this.user.friends.length) {
-                  friendTemp.sort((a, b) => (a.email > b.email) ? 1 : (a.email < b.email) ? -1 : 0)
-                  this.friends = friendTemp;
-                  this.friendsTemp = friendTemp;
-                  console.log(friendTemp);
-                  loading.dismiss()
-                }
+                loading.dismiss()
               }
+              // })
+              // } else {
+              // dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
+              // friendTemp.push(dataTemp);
+              // if (i + 1 == this.user.friends.length) {
+              //   friendTemp.sort((a, b) => (a.email > b.email) ? 1 : (a.email < b.email) ? -1 : 0)
+              //   this.friends = friendTemp;
+              //   this.friendsTemp = friendTemp;
+              //   console.log(friendTemp);
+              //   loading.dismiss()
+              // }
+              // }
             })
           })
         } else {

@@ -76,12 +76,12 @@ export class ModalprofilefriendPage {
         chat.docChanges.forEach(data => {
 
           if (data.newIndex != -1 && data.type != 'modified') {
-            msgTemp.push(data.doc.data())
+            let dataTemp = data.doc.data()
+            let d = new Date(data.doc.data().date)
+           
+            dataTemp.dateTxt = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+            msgTemp.push(dataTemp)
           }
-
-          // if (data.doc.data().sender == this.friend.email && this.checkLoad) {
-          //   this.presentToast();
-          // }
         })
         this.rooms = {
           friend: this.friend,
@@ -101,14 +101,6 @@ export class ModalprofilefriendPage {
 
     this.getChat();
   }
-
-  // presentToast() {
-  //   const toast = this.toastCtrl.create({
-  //     message: 'User was added successfully',
-  //     duration: 3000
-  //   });
-  //   toast.present();
-  // }
 
   call() {
     window.location.href = 'tel:' + this.friend.tel;

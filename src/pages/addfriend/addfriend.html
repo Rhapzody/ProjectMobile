@@ -38,7 +38,7 @@
     <ion-list style="margin-top: 20px;" *ngIf="data_friend">
       <ion-item>
         <ion-avatar item-start>
-          <img [src]="frieng_img">
+          <img [src]="data_friend.path_photo">
         </ion-avatar>
         <ion-label>{{data_friend.name}}</ion-label>
         <ion-avatar item-end>
@@ -54,7 +54,7 @@
       </ion-list-header>
       <ion-item *ngFor="let data of data_friend_request; let i = index;">
         <ion-avatar item-start>
-          <img [src]="data.photo">
+          <img [src]="data.path_photo">
         </ion-avatar>
         <ion-label>{{data.name}}</ion-label>
         <ion-avatar item-end>

@@ -38,7 +38,7 @@
     <ion-input type="password" #password></ion-input>
 
     <ion-label float>{{ 'Tel' }}</ion-label>
-    <ion-input type="tel" #tel minlength="10" maxlength="10" (ionInput)="validTel($event);"></ion-input>
+    <ion-input type="number" #tel minlength="10" maxlength="10" (ionInput)="validTel($event);"></ion-input>
     <!-- <ion-label color="danger" [hidden]="valid_tel">โปรดใส่ให้ครบ 10 ตัว</ion-label> -->
 
     <div padding text-center>

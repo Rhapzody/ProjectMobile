@@ -9,6 +9,7 @@ import { FirebaseStorageProvider } from '../../providers/firebase-storage/fireba
 import { Storage } from '@ionic/storage';
 import { User } from '../../models/users';
 import { LoginPage } from '../login/login';
+import { async } from '@firebase/util';
 
 @Component({
   selector: 'page-about',
@@ -67,106 +68,81 @@ export class AboutPage {
     this.navCtrl.push(ChatPage, { room: room, user: this.user })
   }
 
-  loadData = (usertemp) => {
+  async loadData(usertemp) {
     let loading = this.loadingCtrl.create({
       content: "Please wait..."
     })
 
-    loading.present().then(() => {
+    await loading.present().then(async () => {
       console.log(usertemp);
 
       this.user = usertemp;
-      // this.rooms = usertemp.rooms;
-      // this.readCount = usertemp.readCount;
-      // console.log(this.user);
-      // console.log(this.rooms);
-      // console.log(this.readCount);
+      await this.chatService.getRoomChat(this.user.email).onSnapshot(data => {
 
-
-
-      // loading.dismiss();
-      this.chatService.getRoomChat(this.user.email).onSnapshot(async data => {
-        console.log('72 about');
-        // console.log(data.docChanges);
         let roomtemp = [];
-        await data.docs.forEach((room, i) => {
-
-          this.userService.checkEmailUser(room.data().user2).then(user2 => {
+        data.docs.forEach(async (room, i) => {
+          await this.userService.checkEmailUser(room.data().user2).then(async user2 => {
             let dataTemp = user2.docs[0].data()
-            if (dataTemp.photo != '') {
-              this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name).then(url => {
-                dataTemp.photo = url;
-                let msgTemp = [];
-                let readTemp = 0;
-                this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
-                  console.log('83 about');
-                  // console.log(chat.docChanges);
-
-                  if (chat.docs.length > 0) {
-                    chat.docChanges.forEach(data => {
-                      // console.log(data);
-                      if (data.newIndex != -1 && data.type != 'modified') {
-                        let dataTemp = data.doc.data()
-                        let d = new Date(data.doc.data().date)
-                        // console.log(d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
-                        dataTemp.date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
-                        msgTemp.push(dataTemp)
-                        if (data.doc.data().status == 0) readTemp += 1;
-                      } else if (data.type == 'modified') {
-                        readTemp = 0;
-
-                        console.log(i);
-
-                      }
-                    })
-                    this.readCount[i] = readTemp
-                    console.log(this.readCount);
+            // if (dataTemp.photo != '') {
+            //   let url = await this.firebaseSto.getURLImg(dataTemp.email, dataTemp.name)
+            //   dataTemp.photo = url;
+            let msgTemp = [];
+            let readTemp = 0;
+            this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
+              if (chat.docs.length > 0) {
+                chat.docChanges.forEach(data => {
+                  if (data.newIndex != -1 && data.type != 'modified') {
+                    let dataTemp = data.doc.data()
+                    let d = new Date(data.doc.data().date)
+                    dataTemp.dateTxt = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+                    msgTemp.push(dataTemp)
+                    if (data.doc.data().status == 0) readTemp += 1;
+                  } else if (data.type == 'modified') {
+                    readTemp = 0;
                   }
                 })
-                roomtemp.push({ friend: dataTemp, messages: msgTemp });
-                this.rooms = roomtemp;
-                this.roomsTemp = roomtemp;
-                console.log(this.roomsTemp);
-              })
-            } else {
-              dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-              let msgTemp = [];
-              let readTemp = 0;
-              this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
-                console.log('98 about');
+                this.readCount[i] = readTemp
+              }
+            })
+            roomtemp[i] = { friend: dataTemp, messages: msgTemp };
+            // roomtemp.push({ friend: dataTemp, messages: msgTemp })
+            this.rooms = roomtemp;
+            this.roomsTemp = roomtemp;
+            console.log(this.roomsTemp);
 
-                if (chat.docs.length > 0) {
-                  chat.docChanges.forEach((data) => {
-                    // console.log(data);
-                    if (data.newIndex != -1 && data.type != 'modified') {
-                      let dataTemp = data.doc.data()
-                      let d = new Date(data.doc.data().date)
-                      // console.log(d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds());
-                      dataTemp.date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
-                      msgTemp.push(dataTemp)
-                      if (data.doc.data().status == 0) readTemp += 1;
-                    } else if (data.type == 'modified') {
-                      readTemp = 0;
-                      console.log(i);
-                    }
+            // } else {
+            //   dataTemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
+            // let msgTemp = [];
+            // let readTemp = 0;
+            // this.chatService.getChat(this.user.email, dataTemp.email).onSnapshot(chat => {
+            //   console.log('98 about');
 
-                  })
-                  this.readCount[i] = readTemp
-                  console.log(this.readCount);
-                }
-              })
+            //   if (chat.docs.length > 0) {
+            //     chat.docChanges.forEach((data) => {
+            //       if (data.newIndex != -1 && data.type != 'modified') {
+            //         let dataTemp = data.doc.data()
+            //         let d = new Date(data.doc.data().date)
+            //         dataTemp.dateTxt = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds()
+            //         msgTemp.push(dataTemp)
+            //         if (data.doc.data().status == 0) readTemp += 1;
+            //       } else if (data.type == 'modified') {
+            //         readTemp = 0;
+            //       }
 
-              roomtemp.push({ friend: dataTemp, messages: msgTemp });
-              this.rooms = roomtemp;
-              this.roomsTemp = roomtemp
-              console.log(this.rooms);
+            //     })
+            //     this.readCount[i] = readTemp
+            //   }
+            // })
 
-
-            }
+            // roomtemp[i] = { friend: dataTemp, messages: msgTemp };
+            // this.rooms = roomtemp;
+            // this.roomsTemp = roomtemp;
+            // }
           })
+          // if (i + 1 == data.size) loading.dismiss()
         })
-        loading.dismiss()
       })
+      loading.dismiss()
     })
   }
 

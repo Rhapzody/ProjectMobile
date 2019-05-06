@@ -16,10 +16,10 @@
         <ion-grid>
           <ion-row>
             <ion-col col-2 text-left>
-              <img class="friend-img" [src]="room.friend.photo" alt="">
+              <img class="friend-img" [src]="room.friend.path_photo" alt="">
             </ion-col>
             <ion-col col-10 (press)="deleteMsg(i)">
-                <p>{{message.content}}<br /><small>{{message.date}}</small></p>
+                <p>{{message.content}}<br /><small>{{message.dateTxt}}</small></p>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -29,11 +29,11 @@
         <ion-grid>
           <ion-row>
             <ion-col col-10 (press)="deleteMsg(i)" color="char">
-              <p>{{message.content}}<br /><small>{{message.date}}</small></p>
+              <p>{{message.content}}<br /><small>{{message.dateTxt}}</small></p>
 
             </ion-col>
             <ion-col col-2>
-              <img class="friend-img" [src]="user.photo" alt="">
+              <img class="friend-img" [src]="user.path_photo" alt="">
             </ion-col>
           </ion-row>
         </ion-grid>

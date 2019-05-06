@@ -72,7 +72,13 @@ export class ChatServiceProvider {
   }
 
   deleteMsg(email, email_friend, message) {
+    let d = new Date(message.date)
+
+    console.log(d.getTime());
+    
     return firebase.firestore().collection('rooms').doc(email + '_' + email_friend).collection('messages').where('sender', '==', message.sender).where('type', '==', message.type).where('date', '==', message.date).where('content', '==', message.content).get().then(doc => {
+      console.log(doc.docs);
+      
       firebase.firestore().collection('rooms/' + email + '_' + email_friend + '/messages').doc(doc.docs[0].id).delete()
     })
   }

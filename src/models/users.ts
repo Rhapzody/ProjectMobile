@@ -9,4 +9,5 @@ export class User {
     friends: Array<User>;
     rooms: Array<Room>;
     tel: string;
+    path_photo: string;
 }
