@@ -44,15 +44,7 @@ export class AboutPage {
             if (!docUser.empty) {
               docUser.forEach(async data => {
                 let usertemp = <User>data.data();
-                if (usertemp.photo != '') {
-                  let url = await this.firebaseSto.getURLImg(usertemp.email, usertemp.photo)
-                  usertemp.photo = url;
-                  // loading.dismiss()
-                } else {
-                  usertemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-                  // loading.dismiss()
 
-                }
                 this.loadData(usertemp)
               })
             }
@@ -155,7 +147,7 @@ export class AboutPage {
   deleteRoomChat(i) {
     console.log(i);
     console.log(this.rooms[i]);
-
+    console.log(this.rooms.length);
     this.actionSheetCtrl.create({
       buttons: [
         {
@@ -165,7 +157,10 @@ export class AboutPage {
             console.log('Destructive clicked');
             this.chatService.deleteRoomChat(this.user.email, this.rooms[i].friend.email).then(() => {
               console.log('delete success.');
-              // this.rooms.splice(i, 1)
+              console.log(this.rooms.length);
+              if(this.rooms.length == 1){
+                this.rooms.splice(i, 1)
+              }
             })
           }
         }, {

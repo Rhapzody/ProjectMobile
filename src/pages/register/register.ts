@@ -184,18 +184,10 @@ export class RegisterPage {
         let usertemp: any;
         user.forEach(async data => {
           usertemp = data.data();
-          if (usertemp.photo != '') {
-            let url = await this.firebaseSto.getURLImg(usertemp.email, usertemp.photo)
-            usertemp.photo = url;
-            // loading.dismiss()
-          } else {
-            usertemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-            // loading.dismiss()
-
-          }
+          
           this.storage.set('authChat', usertemp.email)
 
-          this.navCtrl.push(TabsPage, { "user": usertemp });
+          this.navCtrl.setRoot(TabsPage, { "user": usertemp });
 
         })
       } else {
@@ -206,20 +198,13 @@ export class RegisterPage {
   }
 
   validateEmail() {
-    console.log('191');
-
+    
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.valid_email = re.test(this._email.value);
   }
 
   validTel(e) {
-    console.log(e);
 
-    // let regExp = /[0-9]/;
-    // if(e.target.value.length != 0)
-    // if(!regExp.test(e.target.value)){
-    //   e.preventDefault();
-    // }
     if ((e.keyCode < 48 || e.keyCode > 57)) {
       e.preventDefault();
     }

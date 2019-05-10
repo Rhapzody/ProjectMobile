@@ -43,15 +43,7 @@ export class LoginPage {
         let usertemp: any;
         user.forEach(async data => {
           usertemp = data.data();
-          // if (usertemp.photo != '') {
-          //   let url = await this.firebaseSto.getURLImg(usertemp.email, usertemp.photo)
-          //   usertemp.photo = url;
-          //   // loading.dismiss()
-          // } else {
-          //   usertemp.photo = "https://png.pngtree.com/svg/20170827/people_106508.png";
-          //   // loading.dismiss()
-
-          // }
+  
           this.storage.set('authChat', usertemp.email)
 
           this.navCtrl.setRoot(TabsPage, { "user": usertemp });
